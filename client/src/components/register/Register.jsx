@@ -3,11 +3,11 @@ export default function Register() {
     <section id="register">
       <h1>Register</h1>
       <form id="register-form">
-        <label for="email">Email:</label>
+        <label htmlFor="email">Email:</label>
         <input type="email" id="email" name="email" required />
-        <label for="password">Password:</label>
+        <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" required />
-        <label for="re-password">Re-Password:</label>
+        <label htmlFor="re-password">Re-Password:</label>
         <input type="password" id="re-password" name="re-password" required />
         <input type="submit" value="Register" />
       </form>
