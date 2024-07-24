@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import expenseAPI from "../../api/expense-api";
 import Expense from "./Expense";
+import { getAllExpenses } from "../../hooks/expenseHooks";
 
 export default function ExpenseList() {
-  const [expenses, setExpenses] = useState([]);
-
-  useEffect(() => {
-    //expenseAPI.getAll().then((expenses) => setExpenses(expenses));
-    (async () => {
-      const expenses = await expenseAPI.getAll();
-      setExpenses(expenses);
-    })();
-  }, []);
-
+  const [expenses] = getAllExpenses();
   return (
     <section id="expense-list">
       <h1>Expenses</h1>
