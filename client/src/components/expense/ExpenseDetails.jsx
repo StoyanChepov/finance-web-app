@@ -1,16 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import expenseAPI from "../../api/expense-api";
+import { get } from "../../api/requester";
+import { getAllExpenses, getOneExpense } from "../../hooks/expenseHooks";
 
 export default function ExpenseDetails() {
-  const [expense, setExpense] = useState({});
   const { expenseId } = useParams();
-  useEffect(() => {
-    (async () => {
-      const expense = await expenseAPI.getById(expenseId);
-      setExpense(expense);
-    })();
-  }, []);
+  const [expense, setExpense] = getOneExpense(expenseId);
 
   return (
     <div className="expense-details">

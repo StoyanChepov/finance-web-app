@@ -13,3 +13,16 @@ export function getAllExpenses() {
 
   return [expenses, setExpenses];
 }
+
+export function getOneExpense(expenseId) {
+  const [expense, setExpense] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const expense = await expenseAPI.getById(expenseId);
+      setExpense(expense);
+    })();
+  }, [expenseId]);
+
+  return [expense, setExpense];
+}
