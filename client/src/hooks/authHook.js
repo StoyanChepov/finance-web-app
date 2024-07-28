@@ -7,7 +7,7 @@ export const loginHook = () => {
   const loginHandler = async (email, password) => {
     try {
       console.log("Login authHook: ", email, password);
-      const authData = await login(email, password);
+      const { password: pass, ...authData } = await login(email, password);
       console.log("Auth: ", authData);
       changeAuthState(authData);
       //localStorage.setItem("auth", JSON.stringify(authData));
@@ -21,7 +21,7 @@ export const loginHook = () => {
 export const registerHook = () => {
   const { changeAuthState } = useContext(AuthContext);
   const registerHandler = async (email, password) => {
-    const { password, ...authData } = await register(email, password);
+    const { password: pass, ...authData } = await register(email, password);
     console.log("Auth data for state: ", authData);
     changeAuthState(authData);
     //localStorage.setItem("auth", JSON.stringify(authData));
