@@ -1,12 +1,45 @@
+import { login } from "../../api/auth-api";
+import { useForm } from "../../hooks/useForm";
+import { loginHook } from "../../hooks/authHook";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
+  const login = loginHook();
+  const navigate = useNavigate();
+  const { values, changeHandler, submitHandler } = useForm(
+    { email: "", password: "" },
+    async ({ email, password }) => {
+      try {
+        await login(email, password);
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  );
+
   return (
     <section id="login">
       <h1>Login</h1>
-      <form id="login-form">
+      <form id="login" onSubmit={submitHandler}>
         <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" required />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={values.email}
+          onChange={changeHandler}
+          required
+        />
         <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={values.password}
+          onChange={changeHandler}
+          required
+        />
         <input type="submit" value="Login" />
       </form>
     </section>
