@@ -1,14 +1,30 @@
+import { getAccessToken } from "../utils/authUtils";
+
 async function requester(method, endpoint, body) {
   console.log("Requester endpoint", endpoint);
   console.log("Requester method", method);
   console.log("Requester body", body);
   const options = { method, headers: {} };
 
+  const accessToken = getAccessToken();
+
+  if (accessToken) {
+    options.headers = {
+      ...options.headers,
+      "X-Authorization": accessToken,
+    };
+  }
   if (body) {
-    options.headers["Content-Type"] = "application/json";
+    options.headers = {
+      ...options.headers,
+      "Content-Type": "application/json",
+    };
     options.body = JSON.stringify(body);
   }
   const response = await fetch(endpoint, options);
+  if (response.status === 204) {
+    return response;
+  }
   const result = await response.json();
   if (response.ok === false) {
     //1alert(result);

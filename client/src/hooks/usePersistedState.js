@@ -8,7 +8,9 @@ export default function usePersistedState(key, defaultValue) {
 
   const updateState = (newState) => {
     setState(newState);
-    localStorage.setItem(key, JSON.stringify(newState));
+    if (newState !== null && newState !== undefined) {
+      localStorage.setItem(key, JSON.stringify(newState));
+    }
   };
   return [state, updateState];
 }

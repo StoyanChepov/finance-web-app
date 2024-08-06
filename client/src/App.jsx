@@ -7,6 +7,7 @@ import Register from "./components/register/Register";
 import ExpenseList from "./components/expense/ExpenseList";
 import ExpenseDetails from "./components/expense/ExpenseDetails";
 import { AuthContextProvider } from "./contexts/AuthContext";
+import Logout from "./components/logout/Logout";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
               path="/expenses/:expenseId/details"
               element={<ExpenseDetails />}
             />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </main>
       </div>
