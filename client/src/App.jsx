@@ -6,24 +6,11 @@ import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import ExpenseList from "./components/expense/ExpenseList";
 import ExpenseDetails from "./components/expense/ExpenseDetails";
-import { AuthContext } from "./contexts/AuthContext";
-import { useState } from "react";
+import { AuthContextProvider } from "./contexts/AuthContext";
 
 function App() {
-  const [authState, setAuthState] = useState({ isLoggedIn: false });
-
-  const changeAuthState = (newAuthState) => {
-    setAuthState({ ...authState, ...newAuthState });
-  };
-
-  const contextData = {
-    email: authState.email,
-    accessToken: authState.accessToken,
-    isAuthenticated: !!authState.email,
-    changeAuthState: changeAuthState,
-  };
   return (
-    <AuthContext.Provider value={contextData}>
+    <AuthContextProvider>
       <div id="box">
         <Header />
         <main id="main-content">
@@ -39,7 +26,7 @@ function App() {
           </Routes>
         </main>
       </div>
-    </AuthContext.Provider>
+    </AuthContextProvider>
   );
 }
 

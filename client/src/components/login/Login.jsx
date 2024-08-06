@@ -27,6 +27,7 @@ export default function Login() {
           type="email"
           id="email"
           name="email"
+          placeholder="Enter your email"
           value={values.email}
           onChange={changeHandler}
           required
@@ -36,6 +37,7 @@ export default function Login() {
           type="password"
           id="password"
           name="password"
+          placeholder="Enter your password"
           value={values.password}
           onChange={changeHandler}
           required

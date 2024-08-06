@@ -43,6 +43,12 @@ const getById = async (expenseId) => {
   return expense;
 };
 
+const create = async (expenseData) => {
+  request.post(BASE_URL, expenseData);
+};
+
+
+
 const expenseAPI = {
   getAll,
   getById,

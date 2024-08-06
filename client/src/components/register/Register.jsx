@@ -32,6 +32,7 @@ export default function Register() {
           type="email"
           id="email"
           name="email"
+          placeholder="Enter your email"
           value={values.email}
           onChange={changeHandler}
           required
@@ -41,6 +42,7 @@ export default function Register() {
           type="password"
           id="password"
           name="password"
+          placeholder="Enter your password"
           value={values.password}
           onChange={changeHandler}
           required
@@ -50,6 +52,7 @@ export default function Register() {
           type="password"
           id="re-password"
           name="rePassword"
+          placeholder="Re-enter your password"
           values={values.rePassword}
           onChange={changeHandler}
           required

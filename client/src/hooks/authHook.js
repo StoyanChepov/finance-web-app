@@ -1,9 +1,7 @@
 import { login, register } from "../api/auth-api";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-
+import { useAuthContext } from "../contexts/AuthContext";
 export const loginHook = () => {
-  const { changeAuthState } = useContext(AuthContext);
+  const { changeAuthState } = useAuthContext();
   const loginHandler = async (email, password) => {
     try {
       console.log("Login authHook: ", email, password);
