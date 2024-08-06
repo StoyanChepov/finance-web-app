@@ -5,5 +5,5 @@ export default function Logout() {
   const logout = logoutHook();
   logout();
 
-  return <Navigate to="/" />;
+  return <Navigate to="/login" />;
 }
