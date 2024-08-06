@@ -27,9 +27,16 @@ export function getOneExpense(expenseId) {
   return [expense, setExpense];
 }
 
-export function createOneExpense(expenseData) {
-  const expenseCreateHandler =  (expenseData) => {
-    expenseAPI.create(expenseData);
-  }
+export function createOneExpense() {
+  const expenseCreateHandler = (expenseData) => expenseAPI.create(expenseData);
+
+  console.log("Res", expenseCreateHandler);
   return expenseCreateHandler;
+}
+
+export function updateOneExpense() {
+  const expenseUpdateHandler = (expenseId, expenseData) =>
+    expenseAPI.update(expenseId, expenseData);
+
+  return expenseUpdateHandler;
 }

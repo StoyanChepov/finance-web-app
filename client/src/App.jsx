@@ -8,7 +8,8 @@ import ExpenseList from "./components/expense/ExpenseList";
 import ExpenseDetails from "./components/expense/ExpenseDetails";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import Logout from "./components/logout/Logout";
-
+import ExpenseEdit from "./components/expense/ExpenseEdit";
+import ExpenseCreate from "./components/expense/ExpenseCreate";
 function App() {
   return (
     <AuthContextProvider>
@@ -25,6 +26,8 @@ function App() {
               path="/expenses/:expenseId/details"
               element={<ExpenseDetails />}
             />
+            <Route path="/expenses/:expenseId/edit" element={<ExpenseEdit />} />
+            <Route path="expenses/create" element={<ExpenseCreate />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
         </main>

@@ -1339,6 +1339,56 @@
     	}
     };
     var seedData = {
+            expenses: {
+              "1": {
+                _ownerId: "35c62d76-8152-4626-8712-eeb96381bea8",
+                title: "Rent",
+                name: "Rent",
+                category: "Housing",
+                amount: 500,
+                date: "01/01/2021",
+                price: 500,
+                quantity: 1,
+                _createdOn: 1613551279012,
+                _id: "1",
+              },
+              "2": {
+                _ownerId: "35c62d76-8152-4626-8712-eeb96381bea8",
+                title: "Electricity",
+                name: "Electricity",
+                category: "Utilities",
+                amount: 50,
+                date: "01/01/2021",
+                price: 50,
+                quantity: 1,
+                _createdOn: 1613551279012,
+                _id: "2",
+              },
+                "3": {
+                    _ownerId: "35c62d76-8152-4626-8712-eeb96381bea8",
+                    title: "Water",
+                    name: "Water",
+                    category: "Utilities",
+                    amount: 25,
+                    date: "01/01/2021",
+                    price: 25,
+                    quantity: 1,
+                    _createdOn: 1613551279012,
+                    _id: "3",
+                },
+                "4": {
+                    _ownerId: "35c62d76-8152-4626-8712-eeb96381bea8",
+                    title: "Internet",
+                    name: "Internet",
+                    category: "Utilities",
+                    amount: 40,
+                    date: "01/01/2021",
+                    price: 40,
+                    quantity: 1,
+                    _createdOn: 1613551279012,
+                    _id: "4",
+                },
+            },
     	recipes: {
     		"3987279d-0ad4-4afb-8ca9-5b256ae3b298": {
     			_ownerId: "35c62d76-8152-4626-8712-eeb96381bea8",

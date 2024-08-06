@@ -1,4 +1,4 @@
-import { createOneExpense } from "../../hooks/expenseHooks";
+import { updateOneExpense } from "../../hooks/expenseHooks";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 
@@ -11,12 +11,12 @@ const initialValues = {
   quantity: "",
 };
 
-export default function ExpenseCreate() {
+export default function ExpenseEdit() {
   const navigate = useNavigate();
-  const createExpense = createOneExpense();
+  const editExpense = updateOneExpense();
   const createHandler = async (values) => {
     try {
-      const { _id: expenseId } = await createExpense(values);
+      const { _id: expenseId } = await editExpense(values);
       navigate(`/expenses/${expenseId}/details`);
     } catch (error) {
       console.log(error);
@@ -29,8 +29,8 @@ export default function ExpenseCreate() {
   );
 
   return (
-    <div className="expense-create">
-      <h2>Create Expense</h2>
+    <div className="expense-edit">
+      <h2>Edit Expense</h2>
       <form id="create" onSubmit={submitHandler}>
         <label htmlFor="title">Title</label>
         <input
@@ -86,7 +86,7 @@ export default function ExpenseCreate() {
           value={values.quantity}
           onChange={changeHandler}
         />
-        <button type="submit">Create</button>
+        <button type="submit">Save</button>
       </form>
     </div>
   );

@@ -30,7 +30,7 @@ async function requester(method, endpoint, body) {
     //1alert(result);
     throw result;
   }
-  console.log("Requester", response);
+  console.log("Requester", result);
   return result;
 }
 

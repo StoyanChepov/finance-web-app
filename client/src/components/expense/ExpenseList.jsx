@@ -10,7 +10,7 @@ export default function ExpenseList() {
       <h1>Expenses</h1>
       <div className="allExpenses">
         {expenses.map((expense) => (
-          <Expense key={expense.id} {...expense} />
+          <Expense key={expense._id} {...expense} />
         ))}
       </div>
     </section>
