@@ -26,12 +26,17 @@ const getById = async (expenseId) => {
 export const create = async (expenseData) =>
   request.post(BASE_URL, expenseData);
 
-export const update = async (expenseData) => request.put(BASE_URL, expenseData);
+export const update = async (expenseId, expenseData) =>
+  request.put(`${BASE_URL}/${expenseId}`, expenseData);
+export const remove = async (expenseId) =>
+  request.del(`${BASE_URL}/${expenseId}`);
 
 const expenseAPI = {
   getAll,
   getById,
   create,
+  update,
+  remove,
 };
 
 export default expenseAPI;

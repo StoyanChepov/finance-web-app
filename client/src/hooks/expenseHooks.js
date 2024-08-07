@@ -33,10 +33,3 @@ export function createOneExpense() {
   console.log("Res", expenseCreateHandler);
   return expenseCreateHandler;
 }
-
-export function updateOneExpense() {
-  const expenseUpdateHandler = (expenseId, expenseData) =>
-    expenseAPI.update(expenseId, expenseData);
-
-  return expenseUpdateHandler;
-}

@@ -1,6 +1,9 @@
-import { updateOneExpense } from "../../hooks/expenseHooks";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
+import { getOneExpense } from "../../hooks/expenseHooks";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import expenseAPI from "../../api/expense-api";
 
 const initialValues = {
   title: "",
@@ -12,20 +15,17 @@ const initialValues = {
 };
 
 export default function ExpenseEdit() {
+  const { expenseId } = useParams();
+  const [expense, setExpense] = getOneExpense(expenseId);
   const navigate = useNavigate();
-  const editExpense = updateOneExpense();
-  const createHandler = async (values) => {
-    try {
-      const { _id: expenseId } = await editExpense(values);
-      navigate(`/expenses/${expenseId}/details`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const { values, changeHandler, submitHandler } = useForm(
-    initialValues,
-    createHandler
+    Object.assign(initialValues, expense),
+    async (values) => {
+      const updatedExpense = await expenseAPI.update(expenseId, values);
+      console.log(updatedExpense);
+      navigate(`/expenses/${expenseId}/details`);
+    }
   );
 
   return (
