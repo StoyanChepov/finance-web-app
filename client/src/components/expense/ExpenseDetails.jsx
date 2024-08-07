@@ -16,14 +16,15 @@ export default function ExpenseDetails() {
     const isConfirmed = confirm(
       `Are you sure you want to delete the expense with title ${expense.title}?`
     );
-    if (isConfirmed) {
-      try {
-        const response = await expenseAPI.remove(expenseId);
-        console.log(response);
-        navigate("/expenses");
-      } catch (error) {
-        console.log(error);
-      }
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      const response = await expenseAPI.remove(expenseId);
+      console.log(response);
+      navigate("/expenses");
+    } catch (error) {
+      console.log(error);
     }
   };
   return (

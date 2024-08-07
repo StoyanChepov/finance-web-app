@@ -15,7 +15,14 @@ export function getAllExpenses() {
 }
 
 export function getOneExpense(expenseId) {
-  const [expense, setExpense] = useState({});
+  const [expense, setExpense] = useState({
+    title: "",
+    amount: 0,
+    date: "",
+    category: "",
+    quantity: 0,
+    price: 0,
+  });
 
   useEffect(() => {
     (async () => {

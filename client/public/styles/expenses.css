@@ -18,23 +18,35 @@
   text-align: center;
 }
 
-.allExpenses {
+.latestExpenses {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
   display: flex;
-  max-width: 100%;
-  margin: 15px;
-  overflow: hidden;
-  width: 600px auto;
-  min-height: 210px;
-  height: auto;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.allExpenses-info {
-  padding: 80px;
-  position: relative;
+#allExpenses {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
+}
+
+#allExpenses tr:nth-child(even){background-color: #f2f2f2;}
+
+#allExpenses tr:hover {background-color: #ddd;}
+
+#allExpenses th {
+  text-align: left;
+}
+
+
+
+.allExpenses-info {
+  padding: 20px;
+  position: relative;
 }
 
 .allExpenses-info > img {
@@ -54,52 +66,48 @@
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
   color: #fff;
   font-size: 20px;
-  position: absolute;
+  text-align: center;
+  letter-spacing: 1px;
+  padding: 10px;
+  margin: 20px;
+}
+
+.expense-details {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  margin: 15px;
+  overflow: hidden;
+  width: 600px auto;
+  min-height: 210px;
+  height: auto;
+}
+
+.edit-button {
+  background-color: gray;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 20px;
+  position: relative;
   bottom: 30px;
   text-align: left;
   letter-spacing: 1px;
   padding: 10px;
   margin-top: auto;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
-.expense-details {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    max-width: 100%;
-    margin: 15px;
-    overflow: hidden;
-    width: 600px auto;
-    min-height: 210px;
-    height: auto;
+.delete-button {
+  background-color: red;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 20px;
+  position: relative;
+  bottom: 30px;
+  text-align: left;
+  letter-spacing: 1px;
+  padding: 10px;
+  margin-top: auto;
+  margin-right: 20px;
 }
-
-.edit-button {
-    background-color: gray;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    font-size: 20px;
-    position: relative;
-    bottom: 30px;
-    text-align: left;
-    letter-spacing: 1px;
-    padding: 10px;
-    margin-top: auto;
-    margin-right: 20px;
-  }
-
-  .delete-button {
-    background-color: red;
-    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    font-size: 20px;
-    position: relative;
-    bottom: 30px;
-    text-align: left;
-    letter-spacing: 1px;
-    padding: 10px;
-    margin-top: auto;
-    margin-right: 20px;
-  }

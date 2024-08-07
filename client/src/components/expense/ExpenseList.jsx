@@ -8,11 +8,21 @@ export default function ExpenseList() {
   return (
     <section id="expense-list">
       <h1>Expenses</h1>
-      <div className="allExpenses">
-        {expenses.map((expense) => (
-          <Expense key={expense._id} {...expense} />
-        ))}
-      </div>
+      <table id="allExpenses">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expenses.map((expense) => (
+            <Expense key={expense._id} {...expense} />
+          ))}
+        </tbody>
+      </table>
     </section>
   );
 }

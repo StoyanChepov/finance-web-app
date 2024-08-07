@@ -1,15 +1,31 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Expense({ _id, title, amount, date, category }) {
+  const [hoveredId, setHoveredId] = useState(null);
+
+  const handleMouseEnter = (id) => {
+    setHoveredId(id);
+  };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (hoveredId !== null) {
+      navigate(`/expenses/${hoveredId}/details`);
+    }
+  };
+
   return (
-    <div className="allExpenses-info">
-      <h2>{title}</h2>
-      <p>Amount: {amount} $</p>
-      <p>Date: {date}</p>
-      <p>Category: {category}</p>
-      <Link to={`/expenses/${_id}/details`} className="details-button">
-        Details
-      </Link>
-    </div>
+    <tr
+      key={_id}
+      onMouseEnter={() => handleMouseEnter(_id)}
+      onClick={handleClick}
+    >
+      <td>{title}</td>
+      <td>{amount} $</td>
+      <td>{date}</td>
+      <td>{category}</td>
+    </tr>
   );
 }

@@ -7,6 +7,19 @@ const getAll = async () => {
   return expenses;
 };
 
+export const getLatest = async (count) => {
+  const urlSearchParams = new URLSearchParams({
+    //sortBy: "_createdOn desc",
+    pageSize: count,
+  });
+  const expenses = await request.get(
+    `${BASE_URL}?${urlSearchParams.toString()}`
+  );
+
+  const latestExpenses = Object.values(expenses);
+  return latestExpenses;
+};
+
 const getById = async (expenseId) => {
   const expense = await request.get(`${BASE_URL}/${expenseId}`);
   /*
@@ -37,6 +50,7 @@ const expenseAPI = {
   create,
   update,
   remove,
+  getLatest,
 };
 
 export default expenseAPI;
