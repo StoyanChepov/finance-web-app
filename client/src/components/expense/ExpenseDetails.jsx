@@ -13,12 +13,17 @@ export default function ExpenseDetails() {
   const navigate = useNavigate();
 
   const expenseDeleteHandler = async () => {
-    try {
-      const response = await expenseAPI.remove(expenseId);
-      console.log(response);
-      navigate("/expenses");
-    } catch (error) {
-      console.log(error);
+    const isConfirmed = confirm(
+      `Are you sure you want to delete the expense with title ${expense.title}?`
+    );
+    if (isConfirmed) {
+      try {
+        const response = await expenseAPI.remove(expenseId);
+        console.log(response);
+        navigate("/expenses");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (
