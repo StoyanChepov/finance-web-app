@@ -9,6 +9,7 @@ import ExpenseDetails from "./components/expense/ExpenseDetails";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import Logout from "./components/logout/Logout";
 import ConfirmExpenseDelete from "./components/expense/ConfirmExpenseDelete";
+import UploadForm from "./components/upload/UploadForm";
 import ExpenseEdit from "./components/expense/ExpenseEdit";
 import ExpenseCreate from "./components/expense/ExpenseCreate";
 import IsAuthenticatedGuard from "./components/common/IsAuthenticatedGuard";
