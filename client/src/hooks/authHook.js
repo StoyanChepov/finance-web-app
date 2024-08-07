@@ -17,7 +17,7 @@ export const loginHook = () => {
 };
 
 export const registerHook = () => {
-  const { changeAuthState } = useContext(AuthContext);
+  const { changeAuthState } = useAuthContext();
   const registerHandler = async (email, password) => {
     const { password: pass, ...authData } = await register(email, password);
     console.log("Auth data for state: ", authData);

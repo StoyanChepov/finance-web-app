@@ -12,10 +12,10 @@ export default function Header() {
       </h1>
       <nav>
         {/* If user is authenticated, show user links, else show guest links */}
+        <Link to="/expenses">Expenses</Link>
         {isAuthenticated ? (
           <div id="user">
             <Link to="/expenses/create">Add Еxpense</Link>
-            <Link to="/expenses">Expenses</Link>
             <Link to="/logout">Logout</Link>
           </div>
         ) : (

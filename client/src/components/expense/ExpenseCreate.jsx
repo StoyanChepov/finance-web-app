@@ -86,7 +86,11 @@ export default function ExpenseCreate() {
           value={values.quantity}
           onChange={changeHandler}
         />
-        <button type="submit">Create</button>
+        <div className="buttons">
+          <button className="button" type="submit">
+            Create
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -7,11 +7,15 @@ export function useForm(
 ) {
   const [values, setValues] = useState(initialValues);
 
-  useEffect(() => {
-    if (options.reinititializeForm) {
-      setValues(initialValues);
-    }
-  }, [initialValues, options]);
+  useEffect(
+    () => {
+      if (options.reinititializeForm) {
+        setValues(initialValues);
+      }
+    },
+    [initialValues],
+    options
+  );
 
   const changeHandler = (e) => {
     setValues((state) => ({ ...state, [e.target.name]: e.target.value }));

@@ -108,6 +108,8 @@
     text-align: right;
     padding-right: 15px;
     padding-bottom: 40px;
+    display: flex;
+    justify-content: center; /* Center the buttons */
 }
 
 .button {
