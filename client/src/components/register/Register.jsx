@@ -57,7 +57,9 @@ export default function Register() {
           onChange={changeHandler}
           required
         />
-        <input type="submit" value="Register" />
+        <button className="button" type="submit">
+          Register
+        </button>
       </form>
     </section>
   );

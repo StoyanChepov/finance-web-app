@@ -9,11 +9,11 @@ const getAll = async () => {
 
 export const getLatest = async (count) => {
   const urlSearchParams = new URLSearchParams({
-    //sortBy: "_createdOn desc",
+    //sortBy: '_createdOn desc',
     pageSize: count,
   });
   const expenses = await request.get(
-    `${BASE_URL}?${urlSearchParams.toString()}`
+    `${BASE_URL}?${urlSearchParams.toString()}&sortBy=_createdOn%20desc`
   );
 
   const latestExpenses = Object.values(expenses);

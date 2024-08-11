@@ -78,7 +78,7 @@ export default function ExpenseEdit() {
           value={values.quantity}
           onChange={changeHandler}
         />
-        <button type="submit">Save</button>
+        <button className="button" type="submit">Save</button>
       </form>
     </div>
   );

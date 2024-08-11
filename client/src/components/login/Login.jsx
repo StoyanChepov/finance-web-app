@@ -42,7 +42,9 @@ export default function Login() {
           onChange={changeHandler}
           required
         />
-        <input type="submit" value="Login" />
+        <button className="button" type="submit">
+          Login
+        </button>
       </form>
     </section>
   );

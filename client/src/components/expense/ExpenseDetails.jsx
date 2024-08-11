@@ -90,28 +90,31 @@ export default function ExpenseDetails() {
         onRequestClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
       />
-      <h2>Attachments</h2>
       {
-        <ul className="img-container">
-          {attachments &&
-            attachments.map((doc) => (
-              <motion.li
-                className="img-item"
-                key={doc._id}
-                layout
-                whileHover={{ opacity: 1 }}
-              >
-                <motion.img
-                  className="mot-img"
-                  src={doc.url}
-                  alt="uploaded pic"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                />
-              </motion.li>
-            ))}
-        </ul>
+        <div className="attachments">
+          {attachments.length > 0 && (
+            <ul className="img-container">
+              <h2>Attachments</h2>
+              {attachments.map((doc) => (
+                <motion.li
+                  className="img-item"
+                  key={doc._id}
+                  layout
+                  whileHover={{ opacity: 1 }}
+                >
+                  <motion.img
+                    className="mot-img"
+                    src={doc.url}
+                    alt="uploaded pic"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                  />
+                </motion.li>
+              ))}
+            </ul>
+          )}
+        </div>
       }
       {isAuthenticated && (
         <article className="add-attachment">
