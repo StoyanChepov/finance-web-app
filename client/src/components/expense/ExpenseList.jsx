@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import expenseAPI from "../../api/expense-api";
 import Expense from "./Expense";
 import { getAllExpenses } from "../../hooks/expenseHooks";
 

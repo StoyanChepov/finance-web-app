@@ -8,11 +8,11 @@ import ExpenseList from "./components/expense/ExpenseList";
 import ExpenseDetails from "./components/expense/ExpenseDetails";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import Logout from "./components/logout/Logout";
-import ConfirmExpenseDelete from "./components/expense/ConfirmExpenseDelete";
-import UploadForm from "./components/upload/UploadForm";
 import ExpenseEdit from "./components/expense/ExpenseEdit";
 import ExpenseCreate from "./components/expense/ExpenseCreate";
 import IsAuthenticatedGuard from "./components/common/IsAuthenticatedGuard";
+import ChartList from './components/chart/ChartList'
+
 function App() {
   return (
     <AuthContextProvider>
@@ -32,6 +32,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/expenses" element={<ExpenseList />} />
+            <Route path="/monitor" element={< ChartList />} />
             <Route
               path="/expenses/:expenseId/details"
               element={<ExpenseDetails />}

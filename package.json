@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@firebase/firestore": "^4.6.5",
-    "framer-motion": "^11.3.23"
-  }
-}
