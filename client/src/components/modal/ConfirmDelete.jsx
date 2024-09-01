@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-export default function ConfirmExpenseDelete({
+export default function ConfirmDelete({
   isOpen,
   onRequestClose,
   onConfirm,

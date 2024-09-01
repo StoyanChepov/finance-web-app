@@ -1,6 +1,6 @@
 import * as request from "./requester";
 
-const BASE_URL = "http://localhost:3030/data/expenses";
+const BASE_URL = "http://localhost:3000/expenses";
 
 const getAll = async () => {
   const expenses = await request.get(BASE_URL);
@@ -37,7 +37,7 @@ const getById = async (expenseId) => {
 };
 
 export const create = async (expenseData) =>
-  request.post(BASE_URL, expenseData);
+  request.post(`${BASE_URL}/create`, expenseData);
 
 export const update = async (expenseId, expenseData) =>
   request.put(`${BASE_URL}/${expenseId}`, expenseData);

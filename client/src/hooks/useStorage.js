@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  ref,
-  getStorage,
-  uploadBytesResumable,
-  getDownloadURL,
-  uploadString,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useCreateAttachment } from "./useAttachments";
 import { useParams } from "react-router-dom";
 import { storage } from "../firebase/config";
@@ -38,7 +32,7 @@ const useStorage = (image, setAttachments) => {
       },
       async () => {
         const url = await getDownloadURL(uploadImage.snapshot.ref);
-        console.log("URL", url);
+
         try {
           const newAttachment = await createAttachment(expenseId, {
             url,

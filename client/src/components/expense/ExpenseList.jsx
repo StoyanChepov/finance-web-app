@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Expense from "./Expense";
 import { getAllExpenses } from "../../hooks/expenseHooks";
 
@@ -5,7 +6,11 @@ export default function ExpenseList() {
   const [expenses] = getAllExpenses();
   return (
     <section id="expense-list">
-      <h1>Expenses</h1>
+      <div className="buttons">
+        <Link to="/expenses/create" className="button">
+          Add Еxpense
+        </Link>
+      </div>
       <table id="allExpenses">
         <thead>
           <tr>

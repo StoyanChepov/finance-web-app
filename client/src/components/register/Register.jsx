@@ -9,13 +9,12 @@ export default function Register() {
   const register = registerHook();
   const navigate = useNavigate();
   const { values, changeHandler, submitHandler } = useForm(
-    { email: "", password: "" },
+    { email: "", password: "", rePassword: "" },
     async ({ email, password, rePassword }) => {
       if (password !== rePassword)
         return console.error("Passwords do not match");
-
       try {
-        await register(email, password);
+        await register(email, password, rePassword);
         navigate("/");
       } catch (error) {
         console.error(error.message);

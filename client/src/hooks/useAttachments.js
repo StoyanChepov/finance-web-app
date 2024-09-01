@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export function useCreateAttachment() {
   const createAttachmentHandler = (expenseId, attachmentData) =>
     attachmentAPI.create(expenseId, attachmentData.url, attachmentData.name);
+  console.log("Res", createAttachmentHandler);
 
   return createAttachmentHandler;
 }
@@ -14,6 +15,8 @@ export function useGetAttachments(expenseId) {
   useEffect(() => {
     (async () => {
       const attachments = await attachmentAPI.getAll(expenseId);
+      console.log("Attachments to frontend", attachments);
+
       setAttachments(attachments);
     })();
   }, [expenseId]);

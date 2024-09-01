@@ -1,15 +1,12 @@
-import requester from "./requester";
+import * as request from "./requester";
 
-const BASE_URL = "http://localhost:3030/data/attachments";
+const BASE_URL = "http://localhost:3000/attachments";
 
 const create = async (expenseId, url, name) =>
-  requester.post(BASE_URL, { expenseId, url, name });
+  request.post(`${BASE_URL}/create`, { expenseId, url, name });
 
 const getAll = async (expenseId) => {
-  const result = await requester.get(
-    BASE_URL + `?where=expenseId%3D%22${expenseId}%22`
-  );
-  const attachments = Object.values(result);
+  const attachments = await request.get(`${BASE_URL}/${expenseId}`);
   return attachments;
 };
 

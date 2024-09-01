@@ -18,8 +18,8 @@ export const loginHook = () => {
 
 export const registerHook = () => {
   const { changeAuthState } = useAuthContext();
-  const registerHandler = async (email, password) => {
-    const { password: pass, ...authData } = await register(email, password);
+  const registerHandler = async (email, password, repass) => {
+    const { password: pass, ...authData } = await register(email, password, repass);
     console.log("Auth data for state: ", authData);
     changeAuthState(authData);
     //localStorage.setItem("auth", JSON.stringify(authData));

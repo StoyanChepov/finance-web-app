@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import expenseAPI from "../../api/expense-api";
+//import chartAPI from "../../api/chart-api";
 import { get } from "../../api/requester";
-import { getAllExpenses, getOneExpense } from "../../hooks/expenseHooks";
+//import { getAllCharts, getOneChart } from "../../hooks/chartHooks";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "../modal/ConfirmDelete";
@@ -14,27 +14,44 @@ import {
   useGetAttachments,
   useCreateAttachment,
 } from "../../hooks/useAttachments";
+import Chart from "./Chart";
 
 const initialValues = {
   attachment: "",
 };
 
-export default function ExpenseDetails() {
-  const { expenseId } = useParams();
-  const [expense, setExpense] = getOneExpense(expenseId);
+export default function ChartDetails() {
+  const { chartId } = useParams();
+  // const [chart, setChart] = getOneChart(chartId);
+  const [chart] = [
+    {
+      _id: 1,
+      data: {
+        labels: ["2020", "2021", "2022", "2023", "2024"],
+        datasets: [
+          {
+            label: "Income",
+            data: [20000, 30000, 25000, 40000, 60000],
+            borderColor: "rgb(75, 192, 192)",
+          },
+        ],
+      },
+      options: {},
+    },
+  ];
   const [showModal, setShowModal] = useState(false);
   const [attachment, setAttachment] = useState("");
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();
-  const [attachments, setAttachments] = useGetAttachments(expenseId);
-  const isOwner = expense.ownerId === userId;
+  const [attachments, setAttachments] = useGetAttachments(chartId);
+  const isOwner = chart._ownerId === userId;
   const navigate = useNavigate();
 
-  const expenseDeleteHandler = async () => {
+  const chartDeleteHandler = async () => {
     setShowModal(true);
     /*
     const isConfirmed = confirm(
-      `Are you sure you want to delete the expense with title ${expense.title}?`
+      `Are you sure you want to delete the chart with title ${chart.title}?`
     );
     if (!isConfirmed) {
       return;
@@ -45,9 +62,9 @@ export default function ExpenseDetails() {
   const handleConfirmDelete = async () => {
     setShowModal(false);
     try {
-      const response = await expenseAPI.remove(expenseId);
+      const response = await chartAPI.remove(chartId);
       console.log(response);
-      navigate("/expenses");
+      navigate("/charts");
     } catch (error) {
       console.log(error);
     }
@@ -58,18 +75,12 @@ export default function ExpenseDetails() {
   };
 
   return (
-    <div className="expense-details">
-      <h2>Title: {expense.title}</h2>
-      <p>Amount: {expense.amount} $</p>
-      <p>Date: {expense.date.split("T")[0]}</p>
-      <p>Category: {expense.category}</p>
-      <p>Price: {expense.price} $</p>
-      <p>Quantity: {expense.quantity}</p>
-
+    <div className="chart-details">
+      <Chart key={chart._id} {...chart} />
       {isOwner && (
         <div className="buttons">
           <Link
-            to={`/expenses/${expense._id}/edit`}
+            to={`/charts/${chart._id}/edit`}
             className="button"
             id="edit-button"
           >
@@ -77,7 +88,7 @@ export default function ExpenseDetails() {
           </Link>
 
           <Link
-            onClick={expenseDeleteHandler}
+            onClick={chartDeleteHandler}
             className="button"
             id="delete-button"
           >

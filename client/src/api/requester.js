@@ -7,6 +7,7 @@ async function requester(method, endpoint, body) {
   const options = { method, headers: {} };
 
   const accessToken = getAccessToken();
+console.log("Requester accessToken", accessToken);
 
   if (accessToken) {
     options.headers = {

@@ -17,7 +17,9 @@ export default function ExpenseCreate() {
   const createHandler = async (values) => {
     try {
       const { _id: expenseId } = await createExpense(values);
-      navigate(`/expenses/${expenseId}/details`);
+      if (expenseId) {
+        navigate(`/expenses/${expenseId}/details`);
+      }
     } catch (error) {
       console.log(error);
     }
