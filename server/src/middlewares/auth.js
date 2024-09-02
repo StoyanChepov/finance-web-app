@@ -11,14 +11,13 @@ module.exports = function (req, res, next) {
 
   // Verify token
   // process.env.JWT_SECRET
-  console.log("JWT_SECRET is :", process.env.JWT_SECRET);
 
   try {
     jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
       if (error) {
         return res.status(401).json({ msg: "Token is not valid" });
       } else {
-        req.user = decoded.user;
+        req.user = decoded;
         next();
       }
     });

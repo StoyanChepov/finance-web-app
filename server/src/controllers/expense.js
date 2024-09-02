@@ -17,7 +17,7 @@ const auth = require("../middlewares/auth");
 //TODO: Add home controller
 const expenseRouter = Router();
 
-expenseRouter.get("/attachments/:expenseId", async (req, res) => {
+expenseRouter.get("/attachments/:expenseId", auth, async (req, res) => {
   console.log("Attachments", req.params.expenseId);
 
   const attachments = await getAttachments(req.params.expenseId);
@@ -31,7 +31,7 @@ expenseRouter.get("/attachments/:expenseId", async (req, res) => {
 
 expenseRouter.post(
   "/attachments/create",
-  isUser(),
+  auth,
   body("url")
     .trim()
     .isLength({ min: 1 })
@@ -44,8 +44,14 @@ expenseRouter.post(
     try {
       const validation = validationResult(req);
       if (validation.errors.length) {
-        throw validation.errors;
+        return res.status(402).send({ errors: validation.errors });
       }
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
+      }
+
       const result = await addAttachment(
         req.body.expenseId,
         req.body.url,
@@ -95,17 +101,15 @@ expenseRouter.post(
     try {
       const validation = validationResult(req);
       if (validation.errors.length) {
-        throw validation.errors;
+        return res.status(402).send({ errors: validation.errors });
       }
-      console.log(req.user);
-
-      /* if (req.user === undefined && req.user._id === undefined) {
+      if (req.user === undefined && req.user._id === undefined) {
         res
           .status(401)
           .send({ message: "You are not authorized to perform this action!" });
       }
-          */
-      const result = await create(req.body, undefined);
+
+      const result = await create(req.body, req.user._id);
       console.log("Result", result);
 
       res.send(result).status(200);
@@ -121,49 +125,51 @@ expenseRouter.post(
   }
 );
 
-expenseRouter.get("/edit/:id", isUser(), async (req, res) => {
-  const expense = await getById(req.params.id);
-
-  if (!expense) {
-    res.status(404);
-    return;
-  }
-
-  const isOwner = req.user && req.user._id == expense.owner.toString();
-
-  if (!isOwner) {
-    res.redirect("/expenses");
-    return;
-  }
-
-  res.render("edit", { data: expense });
-});
-
-expenseRouter.post(
-  "/edit/:id",
-  isUser(),
+expenseRouter.put(
+  "/expenses/:id",
+  auth,
   body("title")
     .trim()
     .isLength({ min: 2 })
     .withMessage("Title must be at least 2 characters long!"),
-  body("description")
+  body("amount")
     .trim()
-    .isLength({ min: 10, max: 100 })
-    .withMessage("Description must be between 10 and 100 characters long!"),
-  // TODO Add expense columns
+    .isLength({ min: 1 })
+    .withMessage("Amount must be at least 1 character long!"),
+  body("date")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Date must be at least 1 character long!"),
+  body("category")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Category must be at least 1 character long!"),
+  body("quantity")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Quantity must be at least 1 character long!"),
+  body("price")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Price must be at least 1 character long!"),
   async (req, res) => {
     const expenseId = req.params.id;
     const userId = req.user._id;
     try {
       const validation = validationResult(req);
       if (validation.errors.length) {
-        throw validation.errors;
+        return res.status(402).send({ errors: validation.errors });
+      }
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
       }
       const result = await update(expenseId, req.body, userId);
-      res.redirect("/expenses/" + expenseId);
+      res.send(result).status(200);
     } catch (error) {
       console.log("Error:", error);
-      res.render("edit", {
+      res.send({
         errors: parseError(error).errors,
         data: req.body,
       });
@@ -171,27 +177,17 @@ expenseRouter.post(
   }
 );
 
-expenseRouter.get("/like/:id", isUser(), async (req, res) => {
-  const expenseId = req.params.id;
-  const userId = req.user._id;
-  try {
-    const result = await like(expenseId, userId);
-    res.redirect("/expenses/" + expenseId);
-  } catch (error) {
-    console.log("Error:", error);
-    res.redirect("/");
-  }
-});
-
-expenseRouter.get("/delete/:id", isUser(), async (req, res) => {
+expenseRouter.delete("/expenses/:id", auth, async (req, res) => {
   const expenseId = req.params.id;
   const userId = req.user._id;
   try {
     const result = await deleteById(expenseId, userId);
-    res.redirect("/");
+    res.send(result).status(200);
   } catch (error) {
     console.log("Error:", error);
-    res.redirect("/catalog/" + expenseId);
+    res.send({
+      errors: parseError(error).errors,
+    });
   }
 });
 

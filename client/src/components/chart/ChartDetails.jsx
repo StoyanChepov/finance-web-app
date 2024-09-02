@@ -44,7 +44,7 @@ export default function ChartDetails() {
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();
   const [attachments, setAttachments] = useGetAttachments(chartId);
-  const isOwner = chart._ownerId === userId;
+  const isOwner = chart.userId === userId;
   const navigate = useNavigate();
 
   const chartDeleteHandler = async () => {

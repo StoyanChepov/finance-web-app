@@ -41,7 +41,12 @@ userRouter.post(
       const result = await register(email, password);
       const token = createToken(result);
       res.cookie("token", token);
-      res.send(result).status(200);
+      const response = {
+        email: result.email,
+        _id: result._id,
+        accessToken: token,
+      };
+      res.send(response).status(200);
     } catch (error) {
       console.log(error);
       res
@@ -64,8 +69,6 @@ userRouter.post(
     try {
       const result = await login(email, password);
       const token = createToken(result);
-      console.log(result);
-      console.log("Token is :", token);
       res.cookie("token", token);
       const response = {
         email: result.email,

@@ -1,13 +1,10 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import expenseAPI from "../../api/expense-api";
-import { get } from "../../api/requester";
-import { getAllExpenses, getOneExpense } from "../../hooks/expenseHooks";
+import { getOneExpense } from "../../hooks/expenseHooks";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "../modal/ConfirmDelete";
-import attachmentAPI from "../../api/attachment-api";
-import { useForm } from "../../hooks/useForm";
 import UploadForm from "../upload/UploadForm";
 import { motion } from "framer-motion";
 import {
@@ -27,7 +24,8 @@ export default function ExpenseDetails() {
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();
   const [attachments, setAttachments] = useGetAttachments(expenseId);
-  const isOwner = expense.ownerId === userId;
+
+  const isOwner = expense.userId === userId;
   const navigate = useNavigate();
 
   const expenseDeleteHandler = async () => {

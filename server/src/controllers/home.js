@@ -6,12 +6,13 @@ const {
   searchExpense,
 } = require("../services/expense.service");
 
+const auth = require("../middlewares/auth");
 //TODO: Add home controller
 const homeRouter = Router();
 
-homeRouter.get("/expenses", async (req, res) => {
+homeRouter.get("/expenses", auth, async (req, res) => {
   //console.log(req.user);
-  const expenses = await getAll();
+  const expenses = await getAll(req.user._id);
   res.send(expenses).status(200);
 });
 

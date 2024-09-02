@@ -3,8 +3,8 @@ const { Attachment } = require("../models/Attachment");
 
 // TODO replace with your own data service
 
-async function getAll() {
-  return await Expense.find().lean();
+async function getAll(userId) {
+  return await Expense.find({ userId }).lean();
 }
 
 async function getRecent() {
@@ -41,7 +41,7 @@ async function create(data, authorId) {
     category: data.category,
     quantity: data.quantity,
     price: data.price,
-    //createdBy: authorId,
+    userId: authorId,
   });
   await newExpense.save();
 
@@ -53,7 +53,7 @@ async function update(id, data, userId) {
   if (!existing) {
     throw new Error("Expense not found");
   }
-  if (existing.owner.toString() !== userId) {
+  if (existing.userId.toString() !== userId) {
     throw new Error("User is not the author");
   }
 
@@ -77,10 +77,11 @@ async function deleteById(id, userId) {
   if (!existing) {
     throw new Error("Expense not found" + id);
   }
-  if (existing.owner.toString() !== userId) {
+  if (existing.userId.toString() !== userId) {
     throw new Error("User is not the author");
   }
-  await Expense.findByIdAndDelete(id);
+  const result = await Expense.findByIdAndDelete(id);
+  return result
 }
 
 async function searchExpense(title) {
