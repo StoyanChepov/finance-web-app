@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import { registerHook } from "../../hooks/authHook";
-import { register } from "../../api/auth-api";
 
 export default function Register() {
   const [error, setError] = useState(null); //
@@ -11,13 +10,16 @@ export default function Register() {
   const { values, changeHandler, submitHandler } = useForm(
     { email: "", password: "", rePassword: "" },
     async ({ email, password, rePassword }) => {
-      if (password !== rePassword)
-        return console.error("Passwords do not match");
+      if (password !== rePassword) return setError("Passwords do not match");
       try {
-        await register(email, password, rePassword);
-        navigate("/");
+        const result = await register(email, password, rePassword);
+        if (result.errors) {
+          setError(result.errors.error);
+        } else {
+          navigate("/");
+        }
       } catch (error) {
-        console.error(error.message);
+        setError(error);
       }
     }
   );
@@ -56,6 +58,7 @@ export default function Register() {
           onChange={changeHandler}
           required
         />
+        {error && <div className="error">{error}</div>}
         <button className="button" type="submit">
           Register
         </button>

@@ -8,8 +8,7 @@ async function register(identity, password) {
   console.log("Existing: ", existing);
 
   if (existing) {
-    console.error("User already exists with findOne", identityName);
-    return;
+    throw new Error("User already exists", identityName);
   }
   const user = new User({
     [identityName]: identity,

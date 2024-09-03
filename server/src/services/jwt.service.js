@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 function createToken(userData) {
+  if (!userData?._id || !userData?.email) {
+    throw new Error("Invalid user data");
+  }
   const payload = {
     email: userData.email,
     _id: userData._id,

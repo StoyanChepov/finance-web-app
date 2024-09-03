@@ -37,7 +37,12 @@ userRouter.post(
       if (validation.errors.length) {
         throw validation.errors;
       }
-
+    } catch (error) {
+      console.log("Validation error", error);
+      res.status(400).send({ errors: parseError(error).errors });
+      return;
+    }
+    try {
       const result = await register(email, password);
       const token = createToken(result);
       res.cookie("token", token);
@@ -51,7 +56,7 @@ userRouter.post(
       console.log(error);
       res
         .send({
-          errors: parseError(error).errors,
+          errors: parseError(error),
           data: { email },
         })
         .status(400);
