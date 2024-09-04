@@ -34,12 +34,12 @@ async function login(identity, password) {
   const user = await User.findOne({ [identityName]: identity });
   console.log("User: ", user);
   if (!user) {
-    return res.status(400).json({ msg: "Email or password incorrect" });
+    throw new Error("Email or password incorrect!");
   }
 
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    return res.status(400).json({ msg: "Email or password incorrect" });
+    throw new Error("Email or password incorrect");
   }
 
   return user;

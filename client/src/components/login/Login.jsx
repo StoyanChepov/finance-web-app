@@ -1,10 +1,9 @@
-import { login } from "../../api/auth-api";
 import { useForm } from "../../hooks/useForm";
-import { loginHook } from "../../hooks/authHook";
+import { LoginHook } from "../../hooks/useAuthHook";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const login = loginHook();
+  const login = LoginHook();
   const navigate = useNavigate();
   const { values, changeHandler, submitHandler } = useForm(
     { email: "", password: "" },

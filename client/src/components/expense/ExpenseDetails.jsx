@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import expenseAPI from "../../api/expense-api";
-import { getOneExpense } from "../../hooks/expenseHooks";
+import { GetOneExpense } from "../../hooks/useExpenseHooks";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ConfirmDelete from "../modal/ConfirmDelete";
@@ -18,7 +18,7 @@ const initialValues = {
 
 export default function ExpenseDetails() {
   const { expenseId } = useParams();
-  const [expense, setExpense] = getOneExpense(expenseId);
+  const [expense, setExpense] = GetOneExpense(expenseId);
   const [showModal, setShowModal] = useState(false);
   const [attachment, setAttachment] = useState("");
   const { email, userId } = useAuthContext();

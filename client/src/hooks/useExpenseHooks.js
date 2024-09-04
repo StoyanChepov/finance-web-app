@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import expenseAPI from "../api/expense-api";
 
-export function getAllExpenses() {
+export function GetAllExpenses() {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export function getAllExpenses() {
   return [expenses, setExpenses];
 }
 
-export function getOneExpense(expenseId) {
+export function GetOneExpense(expenseId) {
   const [expense, setExpense] = useState({
     title: "",
     amount: 0,
@@ -34,7 +34,7 @@ export function getOneExpense(expenseId) {
   return [expense, setExpense];
 }
 
-export function createOneExpense() {
+export function CreateOneExpense() {
   const expenseCreateHandler = (expenseData) => expenseAPI.create(expenseData);
 
   console.log("Res", expenseCreateHandler);

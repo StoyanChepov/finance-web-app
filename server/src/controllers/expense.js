@@ -1,5 +1,4 @@
 const { Router } = require("express");
-const { getRecent } = require("../services/expense.service");
 const { isUser } = require("../middlewares/guards");
 const { validationResult, body } = require("express-validator");
 const { parseError } = require("../util");
@@ -9,7 +8,8 @@ const {
   update,
   deleteById,
   getAttachments,
-  addAttachment,
+  addCategory,
+  getCategories,
   like,
 } = require("../services/expense.service");
 const auth = require("../middlewares/auth");
@@ -57,6 +57,45 @@ expenseRouter.post(
         req.body.url,
         req.body.name
       );
+      res.send(result).status(200);
+    } catch (error) {
+      console.log("Error:", error);
+      res
+        .send({
+          errors: parseError(error).errors,
+          data: req.body,
+        })
+        .status(402);
+    }
+  }
+);
+
+expenseRouter.get("/categories", auth, async (req, res) => {
+  //console.log(req.user);
+  const categories = await getCategories(req.user._id);
+  res.send(categories).status(200);
+});
+
+expenseRouter.post(
+  "/categories/create",
+  auth,
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Name must be at least 1 character long!"),
+  async (req, res) => {
+    try {
+      const validation = validationResult(req);
+      if (validation.errors.length) {
+        return res.status(402).send({ errors: validation.errors });
+      }
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
+      }
+
+      const result = await addCategory(req.body.name, req.user._id);
       res.send(result).status(200);
     } catch (error) {
       console.log("Error:", error);

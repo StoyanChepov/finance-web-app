@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { registerHook } from "../../hooks/authHook";
+import { RegisterHook } from "../../hooks/useAuthHook";
 
 export default function Register() {
   const [error, setError] = useState(null); //
-  const register = registerHook();
+  const register = RegisterHook();
   const navigate = useNavigate();
   const { values, changeHandler, submitHandler } = useForm(
     { email: "", password: "", rePassword: "" },

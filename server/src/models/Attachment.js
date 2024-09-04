@@ -7,7 +7,7 @@ const attachmentSchema = new Schema({
   name: { type: String, required: true },
   url: { type: String, required: true },
   createdOn: { type: Date, required: true },
-  createdBy: { type: Types.ObjectId, ref: "User" },
+  userId: { type: Types.ObjectId, ref: "User" },
   expenseId: { type: Types.ObjectId, ref: "Expense" },
 });
 

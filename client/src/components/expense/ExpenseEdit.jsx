@@ -1,13 +1,13 @@
 import { useForm } from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
-import { getOneExpense } from "../../hooks/expenseHooks";
+import { GetOneExpense } from "../../hooks/useExpenseHooks";
 import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import expenseAPI from "../../api/expense-api";
 
 export default function ExpenseEdit() {
   const { expenseId } = useParams();
-  const [expense, setExpense] = getOneExpense(expenseId);
+  const [expense, setExpense] = GetOneExpense(expenseId);
   const navigate = useNavigate();
 
   const { values, changeHandler, submitHandler } = useForm(
@@ -19,6 +19,7 @@ export default function ExpenseEdit() {
     },
     { reinititializeForm: true }
   );
+  values.amount = values.price * values.quantity;
 
   return (
     <div className="expense-edit">
@@ -32,15 +33,7 @@ export default function ExpenseEdit() {
           placeholder="Enter title"
           value={values.title}
           onChange={changeHandler}
-        />
-        <label htmlFor="amount">Amount</label>
-        <input
-          type="number"
-          id="amount"
-          name="amount"
-          placeholder="Enter amount"
-          value={values.amount}
-          onChange={changeHandler}
+          required
         />
         <label htmlFor="date">Date</label>
         <input
@@ -48,8 +41,9 @@ export default function ExpenseEdit() {
           id="date"
           name="date"
           placeholder="Enter date"
-          value={values.date}
+          value={values.date.split("T")[0]}
           onChange={changeHandler}
+          required
         />
         <label htmlFor="category">Category</label>
         <input
@@ -59,6 +53,7 @@ export default function ExpenseEdit() {
           placeholder="Enter category"
           value={values.category}
           onChange={changeHandler}
+          required
         />
         <label htmlFor="price">Price</label>
         <input
@@ -68,6 +63,7 @@ export default function ExpenseEdit() {
           placeholder="Enter price"
           value={values.price}
           onChange={changeHandler}
+          required
         />
         <label htmlFor="quantity">Quantity</label>
         <input
@@ -77,8 +73,22 @@ export default function ExpenseEdit() {
           placeholder="Enter quantity"
           value={values.quantity}
           onChange={changeHandler}
+          required
         />
-        <button className="button" type="submit">Save</button>
+        <label htmlFor="amount">Amount</label>
+        <div>Final Amount</div>
+        <input
+          type="number"
+          id="amount"
+          name="amount"
+          value={values.amount}
+          onChange={changeHandler}
+          required
+          readOnly
+        />
+        <button className="button" type="submit">
+          Save
+        </button>
       </form>
     </div>
   );

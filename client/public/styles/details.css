@@ -126,3 +126,68 @@
   background-color: #6f5d9c;
   color: white;
 }
+
+/* styles.css */
+.custom-select__control {
+  border: 2px solid #4caf50;
+  box-shadow: none;
+  height: 50px;
+  width: 20%;
+  font-size: 21px;
+}
+
+.custom-select__control:hover {
+  border-color: #45a049;
+}
+
+.custom-select__option--is-selected {
+  background-color: #4caf50 !important;
+  color: white;
+}
+
+.custom-select__option--is-focused {
+  background-color: #f5f5f5;
+}
+
+.custom-select__single-value {
+  color: #333;
+}
+
+.custom-select__placeholder {
+  color: #ccc;
+}
+
+.custom-select__menu {
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.date {
+  width: 20%;
+  padding: 10px;
+  font-size: 21px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  outline: none;
+  background-color: #fff;
+  color: #333;
+  display: inline-block;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.date:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(50%);
+}
+
+.date::placeholder {
+  color: #aaa;
+  font-style: italic;
+}

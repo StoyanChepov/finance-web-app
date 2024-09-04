@@ -1,5 +1,6 @@
 const { Expense } = require("../models/Expense");
 const { Attachment } = require("../models/Attachment");
+const { Category } = require("../models/Category");
 
 // TODO replace with your own data service
 
@@ -17,6 +18,22 @@ async function getById(id) {
 
 async function getAttachments(expenseId) {
   return await Attachment.find({ expenseId }).lean();
+}
+
+async function getCategories(userId) {
+  return await Category.find({ userId }).lean();
+}
+
+async function addCategory(name, userId) {
+  const newCategory = new Category({
+    name: name,
+    createdOn: new Date().toISOString()?.split("T")[0],
+    userId: userId,
+  });
+
+  await newCategory.save();
+
+  return newCategory;
 }
 
 async function addAttachment(expenseId, url, name) {
@@ -37,8 +54,8 @@ async function create(data, authorId) {
     title: data.title,
     description: data.description,
     amount: data.amount,
-    date: data.date,
-    category: data.category,
+    date: data.date.split("T")[0],
+    categoryId: data.category,
     quantity: data.quantity,
     price: data.price,
     userId: authorId,
@@ -81,7 +98,7 @@ async function deleteById(id, userId) {
     throw new Error("User is not the author");
   }
   const result = await Expense.findByIdAndDelete(id);
-  return result
+  return result;
 }
 
 async function searchExpense(title) {
@@ -104,4 +121,6 @@ module.exports = {
   getRecent,
   searchExpense,
   addAttachment,
+  addCategory,
+  getCategories,
 };
