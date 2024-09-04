@@ -60,7 +60,7 @@ export default function ExpenseDetails() {
       <h2>Title: {expense.title}</h2>
       <p>Amount: {expense.amount} $</p>
       <p>Date: {expense.date.split("T")[0]}</p>
-      <p>Category: {expense.category}</p>
+      <p>Category: {expense.category.name}</p>
       <p>Price: {expense.price} $</p>
       <p>Quantity: {expense.quantity}</p>
 

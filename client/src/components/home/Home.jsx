@@ -21,7 +21,7 @@ export default function Home() {
             <h3>{expense.title}</h3>
             <p>Amount: {expense.amount} $</p>
             <p>Date: {expense.date}</p>
-            <p>Category: {expense.category}</p>
+            <p>Category: {expense.category.name}</p>
           </div>
         ))}
       </div>

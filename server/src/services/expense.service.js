@@ -5,7 +5,10 @@ const { Category } = require("../models/Category");
 // TODO replace with your own data service
 
 async function getAll(userId) {
-  return await Expense.find({ userId }).lean();
+  return await Expense.find({ userId }).populate({
+    path: "category",
+    select: "name",
+  });
 }
 
 async function getRecent() {
@@ -13,7 +16,10 @@ async function getRecent() {
 }
 
 async function getById(id) {
-  return await Expense.findById(id).lean();
+  return await Expense.findById(id).populate({
+    path: "category",
+    select: "name",
+  });
 }
 
 async function getAttachments(expenseId) {
@@ -55,7 +61,7 @@ async function create(data, authorId) {
     description: data.description,
     amount: data.amount,
     date: data.date.split("T")[0],
-    categoryId: data.category,
+    category: data.category,
     quantity: data.quantity,
     price: data.price,
     userId: authorId,
