@@ -13,7 +13,7 @@ export const getLatest = async (count) => {
     pageSize: count,
   });
   const expenses = await request.get(
-    `${BASE_URL}?${urlSearchParams.toString()}&sortBy=_createdOn%20desc`
+    `${BASE_URL}?${urlSearchParams.toString()}`
   );
 
   const latestExpenses = Object.values(expenses);

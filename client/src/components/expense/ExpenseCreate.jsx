@@ -49,6 +49,7 @@ export default function ExpenseCreate() {
       const response = await categoryAPI.create(name);
       console.log("The response", response);
       setCategories((prev) => [response, ...prev]);
+      values.category._id = response._id;
       //navigate("/expenses");
     } catch (error) {
       console.log(error);
@@ -90,21 +91,26 @@ export default function ExpenseCreate() {
           className="custom-select__control"
           id="category"
           name="category"
+          value={values.category._id}
+          defaultValue={""}
           onChange={changeHandler}
           required
         >
-          <option className="custom-select__option" value="">
-            Select category
-          </option>
-          {categories.map((category) => (
-            <option
-              className="custom-select__option"
-              key={category._id}
-              value={category._id}
-            >
-              {category.name}
+          {categories.length > 0 &&
+            categories.map((category) => (
+              <option
+                className="custom-select__option"
+                key={category._id}
+                value={category._id}
+              >
+                {category.name}
+              </option>
+            ))}{" "}
+          {categories.length === 0 && (
+            <option className="custom-select__option" value="">
+              No categories
             </option>
-          ))}
+          )}
         </select>
         <Link
           onClick={categoryCreateHandler}

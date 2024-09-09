@@ -37,6 +37,7 @@ export default function ExpenseEdit() {
     try {
       const response = await categoryAPI.create(name);
       setCategories((prev) => [response, ...prev]);
+      values.category._id = response._id;
       //navigate("/expenses");
     } catch (error) {
       console.log(error);

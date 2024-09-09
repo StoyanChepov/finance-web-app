@@ -12,15 +12,11 @@ import {
   useCreateAttachment,
 } from "../../hooks/useAttachments";
 
-const initialValues = {
-  attachment: "",
-};
 
 export default function ExpenseDetails() {
   const { expenseId } = useParams();
   const [expense, setExpense] = GetOneExpense(expenseId);
   const [showModal, setShowModal] = useState(false);
-  const [attachment, setAttachment] = useState("");
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();
   const [attachments, setAttachments] = useGetAttachments(expenseId);
