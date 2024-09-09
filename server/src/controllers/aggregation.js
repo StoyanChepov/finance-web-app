@@ -27,8 +27,6 @@ aggregationRouter.get("/aggregation", auth, async (req, res) => {
     return;
   }
 
-  console.log("Agg: ", aggregation);
-
   res.send(aggregation).status(200);
 });
 
