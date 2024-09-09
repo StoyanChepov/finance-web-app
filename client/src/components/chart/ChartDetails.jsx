@@ -23,6 +23,7 @@ const initialValues = {
 export default function ChartDetails() {
   const { chartId } = useParams();
   // const [chart, setChart] = getOneChart(chartId);
+  
   const [chart] = [
     {
       _id: 1,

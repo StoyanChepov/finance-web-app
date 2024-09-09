@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import expenseAPI from "../api/expense-api";
+import aggregationAPI from "../api/aggregation-api";
 
 export function GetAllExpenses() {
   const [expenses, setExpenses] = useState([]);
@@ -12,6 +13,19 @@ export function GetAllExpenses() {
   }, []);
 
   return [expenses, setExpenses];
+}
+
+export function GetAggregatedExpenses(number) {
+  const [aggregatedExpenses, setAggregatedExpenses] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const expenses = await aggregationAPI.getChartData(number);
+      setAggregatedExpenses(expenses);
+    })();
+  }, []);
+
+  return [aggregatedExpenses, setAggregatedExpenses];
 }
 
 export function GetOneExpense(expenseId) {

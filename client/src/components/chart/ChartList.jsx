@@ -1,17 +1,20 @@
 import Chart from "./Chart";
+import { GetAggregatedExpenses } from "../../hooks/useExpenseHooks";
 
 export default function ChartList() {
-  // const [expenses] = getAllCharts();
+  const [chartDataGroupedByCategory] = GetAggregatedExpenses(1);
+  const [chartDataGroupedByMonth] = GetAggregatedExpenses(2);
+
   const [charts] = [
     [
       {
         _id: 1,
         data: {
-          labels: ["2020", "2021", "2022", "2023", "2024"],
+          labels: chartDataGroupedByCategory.map((data) => data.category),
           datasets: [
             {
-              label: "Income",
-              data: [20000, 30000, 25000, 40000, 60000],
+              label: "Expense By Category",
+              data: chartDataGroupedByCategory.map((data) => data.total),
               borderColor: "rgb(75, 192, 192)",
             },
           ],
@@ -21,11 +24,11 @@ export default function ChartList() {
       {
         _id: 2,
         data: {
-          labels: ["2020", "2021", "2022", "2023", "2024"],
+          labels: chartDataGroupedByMonth.map((data) => data.date),
           datasets: [
             {
-              label: "Income",
-              data: [20000, 30000, 25000, 40000, 60000],
+              label: "Expense By Month",
+              data: chartDataGroupedByMonth.map((data) => data.total),
               borderColor: "rgb(75, 192, 192)",
             },
           ],
@@ -34,7 +37,6 @@ export default function ChartList() {
       },
     ],
   ];
-  console.log(charts);
 
   return (
     <div id="chart-list">

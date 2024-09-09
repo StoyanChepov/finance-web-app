@@ -1,7 +1,7 @@
 const { Expense } = require("../models/Expense");
 const { Attachment } = require("../models/Attachment");
 const { Category } = require("../models/Category");
-
+const mongoose = require("mongoose");
 // TODO replace with your own data service
 
 async function getAll(userId) {
@@ -9,6 +9,92 @@ async function getAll(userId) {
     path: "category",
     select: "name",
   });
+}
+
+async function getAllByCategory(userId) {
+  console.log("userId in agg", userId);
+  return await Expense.aggregate([
+    { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by userId
+    {
+      $lookup: {
+        from: "categories", // The category collection
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryInfo",
+      },
+    },
+    { $unwind: "$categoryInfo" }, // Unwind the array returned by $lookup
+    { $group: { _id: "$categoryInfo.name", total: { $sum: "$amount" } } }, // Group by category name and sum the amounts
+    { $project: { _id: 0, category: "$_id", total: 1 } }, // Format the result
+    { $sort: { total: -1 } }, // Optionally sort by total in descending order
+  ]).exec();
+  /*
+  return await Expense.aggregate([
+    { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by userId
+    {
+      $lookup: {
+        from: "categories", // The category collection
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryInfo",
+      },
+    },
+    { $unwind: "$categoryInfo" }, // Unwind the categoryInfo array
+    {
+      $group: {
+        _id: {
+          date: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+          category: "$categoryInfo.name",
+        }, // Group by date and category name
+        total: { $sum: "$amount" }, // Sum the total amount per date and category
+        expenses: { $push: "$$ROOT" }, // Optionally push the entire document into the result
+      },
+    },
+    {
+      $project: {
+        _id: 0, // Remove the _id field
+        date: "$_id.date", // Include the grouped date
+        category: "$_id.category", // Include the grouped category name
+        total: 1, // Include the total amount for each group
+        expenses: 1, // Optionally include the individual expenses in each group
+      },
+    },
+    { $sort: { date: 1 } }, // Sort the results by date in ascending order
+  ]).exec();
+
+  */
+  }
+
+async function getAllByDate(userId) {
+  console.log("userId in agg", userId);
+  return await Expense.aggregate([
+    { $match: { userId: new mongoose.Types.ObjectId(userId) } },  // Filter by userId
+    {
+      $lookup: {
+        from: "categories",  // The category collection
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryInfo"
+      }
+    },
+    { $unwind: "$categoryInfo" },  // Unwind the categoryInfo array
+    {
+      $group: {
+        _id: { month: { $dateToString: { format: "%Y-%m", date: "$date" } }, category: "$categoryInfo.name" },  // Group by month and category
+        total: { $sum: "$amount" },  // Sum the total amount per month and category
+      }
+    },
+    {
+      $project: {
+        _id: 0,  // Remove the _id field
+        date: "$_id.month",  // Include the grouped month
+        category: "$_id.category",  // Include the grouped category name
+        total: 1,  // Include the total amount for each group
+      }
+    },
+    { $sort: { date: 1 } }  // Sort the results by month in ascending order
+  ])
+    .exec()
 }
 
 async function getRecent() {
@@ -131,4 +217,6 @@ module.exports = {
   addAttachment,
   addCategory,
   getCategories,
+  getAllByCategory,
+  getAllByDate
 };
