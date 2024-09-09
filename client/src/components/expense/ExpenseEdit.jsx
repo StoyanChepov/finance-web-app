@@ -21,7 +21,13 @@ export default function ExpenseEdit() {
   const { values, changeHandler, submitHandler } = useForm(
     expense,
     async (values) => {
-      const updatedExpense = await expenseAPI.update(expenseId, values);
+      const updatedExpense = await expenseAPI.update(expenseId, {
+        ...values,
+        categoryId:
+          values.category._id !== undefined
+            ? values.category._id
+            : values.category,
+      });
       console.log(updatedExpense);
       navigate(`/expenses/${expenseId}/details`);
     },
@@ -37,14 +43,15 @@ export default function ExpenseEdit() {
     try {
       const response = await categoryAPI.create(name);
       setCategories((prev) => [response, ...prev]);
-      values.category._id = response._id;
+
+      values.category = { _id: response._id, name: response.name };
+
+      return;
       //navigate("/expenses");
     } catch (error) {
       console.log(error);
     }
   };
-  console.log("Expense v", values);
-  console.log("Categories", categories);
 
   const handleCloseModal = () => {
     setShowModal(false);

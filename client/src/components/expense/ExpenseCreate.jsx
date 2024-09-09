@@ -11,7 +11,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 const initialValues = {
   title: "",
   date: "",
-  category: { _id: "", name: "" },
+  category: "",
   price: "",
   quantity: "",
   amount: "",
@@ -24,6 +24,11 @@ export default function ExpenseCreate() {
   const { userId } = useAuthContext();
   const [categories, setCategories] = GetAllCategories(userId);
   const createHandler = async (values) => {
+    values.category =
+      categories.length > 0 && values.category == ""
+        ? categories[0]._id
+        : values.category;
+
     try {
       const { _id: expenseId } = await createExpense(values);
       if (expenseId) {
@@ -50,7 +55,7 @@ export default function ExpenseCreate() {
       const response = await categoryAPI.create(name);
       console.log("The response", response);
       setCategories((prev) => [response, ...prev]);
-      values.category._id = response._id;
+      values.category = response._id;
       //navigate("/expenses");
       return;
     } catch (error) {
@@ -93,7 +98,7 @@ export default function ExpenseCreate() {
           className="custom-select__control"
           id="category"
           name="category"
-          value={values.category._id}
+          value={values.category}
           onChange={changeHandler}
           required
         >

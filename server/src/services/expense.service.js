@@ -82,11 +82,13 @@ async function update(id, data, userId) {
 
   //TODO: Extract data from request
   //existing.prop = data.prop;
+  console.log(data);
+
   existing.title = data.title;
   existing.description = data.description;
   existing.amount = data.amount;
   existing.date = data.date;
-  existing.category = data.category;
+  existing.category = data.categoryId;
   existing.quantity = data.quantity;
   existing.price = data.price;
 
