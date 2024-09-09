@@ -11,7 +11,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 const initialValues = {
   title: "",
   date: "",
-  category: "",
+  category: { _id: "", name: "" },
   price: "",
   quantity: "",
   amount: "",
@@ -38,6 +38,7 @@ export default function ExpenseCreate() {
     initialValues,
     createHandler
   );
+
   values.amount = values.price * values.quantity;
   const categoryCreateHandler = async () => {
     setShowModal(true);
@@ -51,6 +52,7 @@ export default function ExpenseCreate() {
       setCategories((prev) => [response, ...prev]);
       values.category._id = response._id;
       //navigate("/expenses");
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -92,7 +94,6 @@ export default function ExpenseCreate() {
           id="category"
           name="category"
           value={values.category._id}
-          defaultValue={""}
           onChange={changeHandler}
           required
         >

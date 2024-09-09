@@ -81,7 +81,6 @@ export default function ExpenseEdit() {
           id="category"
           name="category"
           value={values.category._id}
-          defaultValue={values.category._id}
           onChange={changeHandler}
           required
         >

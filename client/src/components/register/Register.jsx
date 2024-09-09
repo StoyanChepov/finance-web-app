@@ -4,22 +4,27 @@ import { useForm } from "../../hooks/useForm";
 import { RegisterHook } from "../../hooks/useAuthHook";
 
 export default function Register() {
-  const [error, setError] = useState(null); //
+  const [error, setError] = useState("");
   const register = RegisterHook();
   const navigate = useNavigate();
   const { values, changeHandler, submitHandler } = useForm(
     { email: "", password: "", rePassword: "" },
     async ({ email, password, rePassword }) => {
-      if (password !== rePassword) return setError("Passwords do not match");
-      try {
-        const result = await register(email, password, rePassword);
-        if (result.errors) {
-          setError(result.errors.error);
-        } else {
-          navigate("/");
+      if (password !== rePassword) {
+        setError("Passwords do not match");
+      } else if (password.length < 4) {
+        setError("Password must be at least 4 characters long");
+      } else {
+        try {
+          const result = await register(email, password, rePassword);
+          if (result.errors) {
+            setError(result.errors.error);
+          } else {
+            navigate("/");
+          }
+        } catch (error) {
+          setError(error);
         }
-      } catch (error) {
-        setError(error);
       }
     }
   );
