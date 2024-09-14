@@ -4,7 +4,7 @@ import { useForm } from "../../hooks/useForm";
 
 Modal.setAppElement("#root");
 
-export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm }) {
+export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm, object }) {
   const { values, changeHandler, submitHandler } = useForm(
     { name: "" },
     async ({ name }) => {
@@ -23,7 +23,7 @@ export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm }) {
       overlayClassName="react-modal-overlay"
       contentLabel="Confirm Create"
     >
-      <h2 className="modal-header">Create Category</h2>
+      <h2 className="modal-header">Create {object}</h2>
       <form onSubmit={submitHandler}>
         <label htmlFor="category" className="modal-text">
           Name
@@ -32,7 +32,7 @@ export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm }) {
           type="text"
           id="name"
           name="name"
-          placeholder="Enter category"
+          placeholder="Enter "
           value={values.name}
           onChange={changeHandler}
         />

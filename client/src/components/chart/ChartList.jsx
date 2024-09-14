@@ -9,6 +9,7 @@ export default function ChartList() {
     [
       {
         _id: 1,
+        type: "bar",
         data: {
           labels: chartDataGroupedByCategory.map((data) => data.category),
           datasets: [
@@ -19,7 +20,18 @@ export default function ChartList() {
             },
           ],
         },
-        options: {},
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Chart.js Line Chart By Category",
+            },
+          },
+        },
       },
       {
         _id: 2,
@@ -33,7 +45,18 @@ export default function ChartList() {
             },
           ],
         },
-        options: {},
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Chart.js Line Chart",
+            },
+          },
+        },
       },
     ],
   ];

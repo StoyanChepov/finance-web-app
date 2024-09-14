@@ -12,7 +12,6 @@ import {
   useCreateAttachment,
 } from "../../hooks/useAttachments";
 
-
 export default function ExpenseDetails() {
   const { expenseId } = useParams();
   const [expense, setExpense] = GetOneExpense(expenseId);

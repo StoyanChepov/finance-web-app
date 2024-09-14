@@ -9,11 +9,13 @@ const {
   deleteById,
   getAttachments,
   addCategory,
+  addItem,
   getCategories,
+  getItems,
+  getItemTypes,
   like,
 } = require("../services/expense.service");
 const auth = require("../middlewares/auth");
-
 //TODO: Add home controller
 const expenseRouter = Router();
 
@@ -57,6 +59,49 @@ expenseRouter.post(
         req.body.url,
         req.body.name
       );
+      res.send(result).status(200);
+    } catch (error) {
+      console.log("Error:", error);
+      res
+        .send({
+          errors: parseError(error).errors,
+          data: req.body,
+        })
+        .status(402);
+    }
+  }
+);
+
+expenseRouter.get("/items", auth, async (req, res) => {
+  const items = await getItems(req.user._id);
+  res.send(items).status(200);
+});
+
+expenseRouter.get("/items/types", auth, async (req, res) => {
+  const items = await getItemTypes();
+  res.send(items).status(200);
+});
+
+expenseRouter.post(
+  "/items/create",
+  auth,
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Name must be at least 1 character long!"),
+  async (req, res) => {
+    try {
+      const validation = validationResult(req);
+      if (validation.errors.length) {
+        return res.status(402).send({ errors: validation.errors });
+      }
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
+      }
+
+      const result = await addItem(req.body.name, req.body.type, req.user._id);
       res.send(result).status(200);
     } catch (error) {
       console.log("Error:", error);
@@ -136,6 +181,7 @@ expenseRouter.post(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Price must be at least 1 character long!"),
+  body("item").trim(),
   async (req, res) => {
     try {
       const validation = validationResult(req);
@@ -147,6 +193,7 @@ expenseRouter.post(
           .status(401)
           .send({ message: "You are not authorized to perform this action!" });
       }
+      console.log("BODY", req.body);
 
       const result = await create(req.body, req.user._id);
       console.log("Result", result);

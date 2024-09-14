@@ -2,10 +2,13 @@ import { CreateOneExpense } from "../../hooks/useExpenseHooks";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetAllCategories, CreateOneCategory } from "../../hooks/useCategory";
+import { GetAllItems, CreateOneItem } from "../../hooks/useItem";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ConfirmCreate from "../modal/ConfirmCreate";
+import ConfirmItemCreate from "../modal/ConfirmItemCreate";
 import categoryAPI from "../../api/category-api";
+import itemAPI from "../../api/item-api";
 import { useAuthContext } from "../../contexts/AuthContext";
 
 const initialValues = {
@@ -15,14 +18,18 @@ const initialValues = {
   price: "",
   quantity: "",
   amount: "",
+  item: "",
+  itemType: "",
 };
 
 export default function ExpenseCreate() {
   const navigate = useNavigate();
   const createExpense = CreateOneExpense();
-  const [showModal, setShowModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showItemModal, setShowItemModal] = useState(false);
   const { userId } = useAuthContext();
   const [categories, setCategories] = GetAllCategories(userId);
+  const [items, setItems] = GetAllItems(userId);
   const createHandler = async (values) => {
     values.category =
       categories.length > 0 && values.category == ""
@@ -46,17 +53,33 @@ export default function ExpenseCreate() {
 
   values.amount = values.price * values.quantity;
   const categoryCreateHandler = async () => {
-    setShowModal(true);
+    setShowCategoryModal(true);
   };
 
-  const handleConfirmCreate = async (name) => {
-    setShowModal(false);
+  const itemCreateHandler = async () => {
+    setShowItemModal(true);
+  };
+
+  const handleConfirmCategoryCreate = async (name) => {
+    setShowCategoryModal(false);
     try {
       const response = await categoryAPI.create(name);
       console.log("The response", response);
       setCategories((prev) => [response, ...prev]);
       values.category = response._id;
-      //navigate("/expenses");
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmItemCreate = async (name, type) => {
+    setShowItemModal(false);
+    try {
+      const response = await itemAPI.create(name, type);
+      console.log("The response", response);
+      setItems((prev) => [response, ...prev]);
+      values.item = response._id;
       return;
     } catch (error) {
       console.log(error);
@@ -64,7 +87,8 @@ export default function ExpenseCreate() {
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowItemModal(false);
+    setShowCategoryModal(false);
   };
 
   return (
@@ -126,26 +150,62 @@ export default function ExpenseCreate() {
         >
           +
         </Link>
-        <label htmlFor="price">Price</label>
-        <input
-          type="number"
-          id="price"
-          name="price"
-          placeholder="Enter price"
-          value={values.price}
+
+        <select
+          className="custom-select__control"
+          id="item"
+          name="item"
+          value={values.item}
           onChange={changeHandler}
           required
-        />
-        <label htmlFor="quantity">Quantity</label>
-        <input
-          type="number"
-          id="quantity"
-          name="quantity"
-          placeholder="Enter quantity"
-          value={values.quantity}
-          onChange={changeHandler}
-          required
-        />
+        >
+          {items.length > 0 &&
+            items.map((item) => (
+              <option
+                className="custom-select__option"
+                key={item._id}
+                value={item._id}
+              >
+                {item.name}
+              </option>
+            ))}{" "}
+          {items.length === 0 && (
+            <option className="custom-select__option" value="">
+              No items
+            </option>
+          )}
+        </select>
+        <Link
+          onClick={itemCreateHandler}
+          className="button"
+          id="create-category-button"
+          title="Create Item"
+        >
+          +
+        </Link>
+
+        <div className="item-position">
+          <label htmlFor="price">Price</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            placeholder="Enter price"
+            value={values.price}
+            onChange={changeHandler}
+            required
+          />
+          <label htmlFor="quantity">Quantity</label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            placeholder="Enter quantity"
+            value={values.quantity}
+            onChange={changeHandler}
+            required
+          />
+        </div>
         <label htmlFor="amount">Amount</label>
         <div>Final Amount</div>
         <input
@@ -163,10 +223,17 @@ export default function ExpenseCreate() {
           </button>
         </div>
       </form>
-      <ConfirmCreate
-        isOpen={showModal}
+      <ConfirmItemCreate
+        isOpen={showItemModal}
         onRequestClose={handleCloseModal}
-        onConfirm={handleConfirmCreate}
+        onConfirm={handleConfirmItemCreate}
+        object="Item"
+      />
+      <ConfirmCreate
+        isOpen={showCategoryModal}
+        onRequestClose={handleCloseModal}
+        onConfirm={handleConfirmCategoryCreate}
+        object="Category"
       />
     </div>
   );

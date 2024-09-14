@@ -38,7 +38,7 @@ export default function Chart({ _id, options, data }) {
       onMouseEnter={() => handleMouseEnter(_id)}
       onClick={handleClick}
     >
-        <Line options={options} data={data} />
+      <Line options={options} data={data} />
     </div>
   );
 }

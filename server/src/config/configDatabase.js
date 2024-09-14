@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-require("../models/User");
-require("../models/Expense");
 
 async function configDatabase() {
   //Set database connection

@@ -3,17 +3,15 @@ const { Schema, Types, model } = require("mongoose");
 
 //TODO: Create a user schema
 
-const expenseSchema = new Schema({
+const positionSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: false },
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
   category: { type: Types.ObjectId, ref: "Category", required: true },
-  quantity: { type: Number, required: true },
-  price: { type: Number, required: true },
   userId: { type: Types.ObjectId, ref: "User", required: false },
 });
 
-const Expense = model("Expense", expenseSchema);
+const Position = model("Position", positionSchema);
 
-module.exports = { Expense };
+module.exports = { Position };

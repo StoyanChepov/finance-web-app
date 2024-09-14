@@ -22,7 +22,7 @@ export default function Expense({ _id, title, amount, date, category }) {
     >
       <td>{title}</td>
       <td>{amount} $</td>
-      <td>{date}</td>
+      <td>{date.split("T")[0]}</td>
       <td>{category.name}</td>
     </tr>
   );
