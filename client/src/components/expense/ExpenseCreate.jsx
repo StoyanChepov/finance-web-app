@@ -105,86 +105,86 @@ export default function ExpenseCreate() {
           onChange={changeHandler}
           required
         />
-        <label htmlFor="date">Date</label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          className="date"
-          placeholder="Enter date"
-          value={values.date.split("T")[0]}
-          onChange={changeHandler}
-          title="Enter date"
-          required
-        />
-        <label htmlFor="category">Category</label>
-        <select
-          className="custom-select__control"
-          id="category"
-          name="category"
-          value={values.category}
-          onChange={changeHandler}
-          required
-        >
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <option
-                className="custom-select__option"
-                key={category._id}
-                value={category._id}
-              >
-                {category.name}
+        <div className="expense-info">
+          <label htmlFor="date">Date</label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            className="date"
+            placeholder="Enter date"
+            value={values.date.split("T")[0]}
+            onChange={changeHandler}
+            title="Enter date"
+            required
+          />
+          <label htmlFor="category">Category</label>
+          <select
+            className="custom-select__control"
+            id="category"
+            name="category"
+            value={values.category}
+            onChange={changeHandler}
+            required
+          >
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <option
+                  className="custom-select__option"
+                  key={category._id}
+                  value={category._id}
+                >
+                  {category.name}
+                </option>
+              ))}{" "}
+            {categories.length === 0 && (
+              <option className="custom-select__option" value="">
+                No categories
               </option>
-            ))}{" "}
-          {categories.length === 0 && (
-            <option className="custom-select__option" value="">
-              No categories
-            </option>
-          )}
-        </select>
-        <Link
-          onClick={categoryCreateHandler}
-          className="button"
-          id="create-category-button"
-          title="Create Category"
-        >
-          +
-        </Link>
-
-        <select
-          className="custom-select__control"
-          id="item"
-          name="item"
-          value={values.item}
-          onChange={changeHandler}
-          required
-        >
-          {items.length > 0 &&
-            items.map((item) => (
-              <option
-                className="custom-select__option"
-                key={item._id}
-                value={item._id}
-              >
-                {item.name}
-              </option>
-            ))}{" "}
-          {items.length === 0 && (
-            <option className="custom-select__option" value="">
-              No items
-            </option>
-          )}
-        </select>
-        <Link
-          onClick={itemCreateHandler}
-          className="button"
-          id="create-category-button"
-          title="Create Item"
-        >
-          +
-        </Link>
-
+            )}
+          </select>
+          <Link
+            onClick={categoryCreateHandler}
+            className="button"
+            id="create-category-button"
+            title="Create Category"
+          >
+            +
+          </Link>
+        </div>
         <div className="item-position">
+          <select
+            className="custom-select__control"
+            id="item"
+            name="item"
+            value={values.item}
+            onChange={changeHandler}
+            required
+          >
+            {items.length > 0 &&
+              items.map((item) => (
+                <option
+                  className="custom-select__option"
+                  key={item._id}
+                  value={item._id}
+                >
+                  {item.name}
+                </option>
+              ))}{" "}
+            {items.length === 0 && (
+              <option className="custom-select__option" value="">
+                No items
+              </option>
+            )}
+          </select>
+          <Link
+            onClick={itemCreateHandler}
+            className="button"
+            id="create-category-button"
+            title="Create Item"
+          >
+            +
+          </Link>
           <label htmlFor="price">Price</label>
           <input
             type="number"
@@ -206,6 +206,7 @@ export default function ExpenseCreate() {
             required
           />
         </div>
+
         <label htmlFor="amount">Amount</label>
         <div>Final Amount</div>
         <input
