@@ -106,118 +106,135 @@ export default function ExpenseCreate() {
           required
         />
         <div className="expense-info">
-          <label htmlFor="date">Date</label>
-          <input
-            type="date"
-            id="date"
-            name="date"
-            className="date"
-            placeholder="Enter date"
-            value={values.date.split("T")[0]}
-            onChange={changeHandler}
-            title="Enter date"
-            required
-          />
-          <label htmlFor="category">Category</label>
-          <select
-            className="custom-select__control"
-            id="category"
-            name="category"
-            value={values.category}
-            onChange={changeHandler}
-            required
-          >
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <option
-                  className="custom-select__option"
-                  key={category._id}
-                  value={category._id}
-                >
-                  {category.name}
-                </option>
-              ))}{" "}
-            {categories.length === 0 && (
-              <option className="custom-select__option" value="">
-                No categories
-              </option>
-            )}
-          </select>
-          <Link
-            onClick={categoryCreateHandler}
-            className="button"
-            id="create-category-button"
-            title="Create Category"
-          >
-            +
-          </Link>
+          <div className="form-group">
+            <label className="expense-detail" htmlFor="date">
+              Date
+            </label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              className="date"
+              placeholder="Enter date"
+              value={values.date.split("T")[0]}
+              onChange={changeHandler}
+              title="Enter date"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="category">Category</label>
+            <div className="add-item">
+              <select
+                className="custom-select__control"
+                id="category"
+                name="category"
+                value={values.category}
+                onChange={changeHandler}
+                required
+              >
+                {categories.length > 0 &&
+                  categories.map((category) => (
+                    <option
+                      className="custom-select__option"
+                      key={category._id}
+                      value={category._id}
+                    >
+                      {category.name}
+                    </option>
+                  ))}{" "}
+                {categories.length === 0 && (
+                  <option className="custom-select__option" value="">
+                    No categories
+                  </option>
+                )}
+              </select>
+              <Link
+                onClick={categoryCreateHandler}
+                className="button"
+                id="create-category-button"
+                title="Create Category"
+              >
+                +
+              </Link>
+            </div>
+          </div>
         </div>
         <div className="item-position">
-          <select
-            className="custom-select__control"
-            id="item"
-            name="item"
-            value={values.item}
-            onChange={changeHandler}
-            required
-          >
-            {items.length > 0 &&
-              items.map((item) => (
-                <option
-                  className="custom-select__option"
-                  key={item._id}
-                  value={item._id}
-                >
-                  {item.name}
-                </option>
-              ))}{" "}
-            {items.length === 0 && (
-              <option className="custom-select__option" value="">
-                No items
-              </option>
-            )}
-          </select>
-          <Link
-            onClick={itemCreateHandler}
-            className="button"
-            id="create-category-button"
-            title="Create Item"
-          >
-            +
-          </Link>
-          <label htmlFor="price">Price</label>
+          <div className="form-group">
+            <label htmlFor="item">Item</label>
+            <div className="add-item">
+              <select
+                className="custom-select__control"
+                id="item"
+                name="item"
+                value={values.item}
+                onChange={changeHandler}
+                required
+              >
+                {items.length > 0 &&
+                  items.map((item) => (
+                    <option
+                      className="custom-select__option"
+                      key={item._id}
+                      value={item._id}
+                    >
+                      {item.name}
+                    </option>
+                  ))}{" "}
+                {items.length === 0 && (
+                  <option className="custom-select__option" value="">
+                    No items
+                  </option>
+                )}
+              </select>
+              <Link
+                onClick={itemCreateHandler}
+                className="button"
+                id="create-category-button"
+                title="Create Item"
+              >
+                +
+              </Link>
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="price">Price</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="Enter price"
+              value={values.price}
+              onChange={changeHandler}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="quantity">Quantity</label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              placeholder="Enter quantity"
+              value={values.quantity}
+              onChange={changeHandler}
+              required
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="amount">Amount</label>
           <input
             type="number"
-            id="price"
-            name="price"
-            placeholder="Enter price"
-            value={values.price}
+            id="amount"
+            name="amount"
+            value={values.amount}
             onChange={changeHandler}
             required
-          />
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            type="number"
-            id="quantity"
-            name="quantity"
-            placeholder="Enter quantity"
-            value={values.quantity}
-            onChange={changeHandler}
-            required
+            readOnly
           />
         </div>
-
-        <label htmlFor="amount">Amount</label>
-        <div>Final Amount</div>
-        <input
-          type="number"
-          id="amount"
-          name="amount"
-          value={values.amount}
-          onChange={changeHandler}
-          required
-          readOnly
-        />
         <div className="buttons">
           <button className="button" type="submit">
             Create
