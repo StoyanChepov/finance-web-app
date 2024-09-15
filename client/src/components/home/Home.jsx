@@ -33,7 +33,7 @@ export default function Home() {
             <div key={expense._id} className="expense">
               <h3>{expense.title}</h3>
               <p>Amount: {expense.amount} $</p>
-              <p>Date: {expense.date}</p>
+              <p>Date: {expense.date.split("T")[0]}</p>
               <p>Category: {expense.category.name}</p>
             </div>
           ))}

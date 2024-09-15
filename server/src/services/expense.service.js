@@ -5,6 +5,7 @@ const { Item } = require("../models/Item");
 
 const mongoose = require("mongoose");
 const { ItemType } = require("../models/ItemType");
+const { ItemPosition } = require("../models/ItemPosition");
 // TODO replace with your own data service
 
 async function getAll(userId) {
@@ -66,38 +67,40 @@ async function getAllByCategory(userId) {
   ]).exec();
 
   */
-  }
+}
 
 async function getAllByDate(userId) {
   console.log("userId in agg", userId);
   return await Position.aggregate([
-    { $match: { userId: new mongoose.Types.ObjectId(userId) } },  // Filter by userId
+    { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by userId
     {
       $lookup: {
-        from: "categories",  // The category collection
+        from: "categories", // The category collection
         localField: "category",
         foreignField: "_id",
-        as: "categoryInfo"
-      }
+        as: "categoryInfo",
+      },
     },
-    { $unwind: "$categoryInfo" },  // Unwind the categoryInfo array
+    { $unwind: "$categoryInfo" }, // Unwind the categoryInfo array
     {
       $group: {
-        _id: { month: { $dateToString: { format: "%Y-%m", date: "$date" } }, category: "$categoryInfo.name" },  // Group by month and category
-        total: { $sum: "$amount" },  // Sum the total amount per month and category
-      }
+        _id: {
+          month: { $dateToString: { format: "%Y-%m", date: "$date" } },
+          category: "$categoryInfo.name",
+        }, // Group by month and category
+        total: { $sum: "$amount" }, // Sum the total amount per month and category
+      },
     },
     {
       $project: {
-        _id: 0,  // Remove the _id field
-        date: "$_id.month",  // Include the grouped month
-        category: "$_id.category",  // Include the grouped category name
-        total: 1,  // Include the total amount for each group
-      }
+        _id: 0, // Remove the _id field
+        date: "$_id.month", // Include the grouped month
+        category: "$_id.category", // Include the grouped category name
+        total: 1, // Include the total amount for each group
+      },
     },
-    { $sort: { date: 1 } }  // Sort the results by month in ascending order
-  ])
-    .exec()
+    { $sort: { date: 1 } }, // Sort the results by month in ascending order
+  ]).exec();
 }
 
 async function getRecent() {
@@ -105,10 +108,28 @@ async function getRecent() {
 }
 
 async function getById(id) {
-  return await Position.findById(id).populate({
-    path: "category",
-    select: "name",
-  });
+  return await Position.findById(id)
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .lean()
+    .exec()
+    .then(async (position) => {
+      if (position) {
+        console.log("Position", position);
+
+        // Find all ItemPositions that reference this Position via positionId
+        const itemPositions = await ItemPosition.find({
+          positionId: position._id,
+        }).populate({
+          path: "itemId",
+          select: "name",
+        });
+        return { ...position, itemPositions };
+      }
+      return null; // Position not found
+    });
 }
 
 async function getAttachments(positionId) {
@@ -140,6 +161,7 @@ async function getItemTypes() {
 }
 
 async function addItem(name, type, userId) {
+  console.log("Add item", name, type, userId);
   const newItem = new Item({
     name: name,
     createdOn: new Date().toISOString()?.split("T")[0],
@@ -172,10 +194,23 @@ async function create(data, authorId) {
     amount: data.amount,
     date: data.date.split("T")[0],
     category: data.category,
-    quantity: data.quantity,
-    price: data.price,
     userId: authorId,
-    
+  });
+  await newPosition.save();
+
+  return newPosition;
+}
+
+async function createLine(data, authorId) {
+  //TODO: Extract data from request
+  const newPosition = new ItemPosition({
+    amount: data.amount,
+    price: data.price,
+    quantity: data.quantity,
+    itemId: data.item,
+    positionId: data.positionId,
+    userId: authorId,
+    createdOn: new Date().toISOString()?.split("T")[0],
   });
   await newPosition.save();
 
@@ -200,8 +235,6 @@ async function update(id, data, userId) {
   existing.amount = data.amount;
   existing.date = data.date;
   existing.category = data.categoryId;
-  existing.quantity = data.quantity;
-  existing.price = data.price;
 
   await existing.save();
 
@@ -235,6 +268,7 @@ module.exports = {
   getById,
   getAttachments,
   create,
+  createLine,
   update,
   deleteById,
   getRecent,

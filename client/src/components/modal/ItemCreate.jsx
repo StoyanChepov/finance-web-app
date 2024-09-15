@@ -6,7 +6,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 
 Modal.setAppElement("#root");
 
-export default function ConfirmCreate({
+export default function ItemCreate({
   isOpen,
   onRequestClose,
   onConfirm,
@@ -15,7 +15,11 @@ export default function ConfirmCreate({
   const { values, changeHandler, submitHandler } = useForm(
     { name: "", type: "" },
     async ({ name, type }) => {
-      type = itemtypes.length > 0 && type == "" ? itemtypes[0]._id : itemtypes;
+      console.log("The type", type);
+      if (type === "") {
+        type = itemtypes[0]._id;
+      }
+      console.log("The type refactored", type);
       try {
         await onConfirm(name, type);
       } catch (error) {
@@ -35,8 +39,8 @@ export default function ConfirmCreate({
       contentLabel="Confirm Create"
     >
       <h2 className="modal-header">Create {object}</h2>
-      <form onSubmit={submitHandler}>
-        <label htmlFor="category" className="modal-text">
+      <form id="create-item" onSubmit={submitHandler}>
+        <label htmlFor="name" className="modal-text">
           Name
         </label>
         <input
@@ -74,6 +78,7 @@ export default function ConfirmCreate({
 
         <div className="modal-buttons">
           <button
+            type="button"
             onClick={onRequestClose}
             className="modal-button modal-button-cancel"
           >

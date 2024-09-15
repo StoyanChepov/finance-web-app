@@ -24,7 +24,7 @@ export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm, objec
       contentLabel="Confirm Create"
     >
       <h2 className="modal-header">Create {object}</h2>
-      <form onSubmit={submitHandler}>
+      <form id="create-category" onSubmit={submitHandler}>
         <label htmlFor="category" className="modal-text">
           Name
         </label>
@@ -39,6 +39,7 @@ export default function ConfirmCreate({ isOpen, onRequestClose, onConfirm, objec
 
         <div className="modal-buttons">
           <button
+            type="button"
             onClick={onRequestClose}
             className="modal-button modal-button-cancel"
           >

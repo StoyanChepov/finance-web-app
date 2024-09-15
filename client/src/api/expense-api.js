@@ -39,6 +39,9 @@ const getById = async (expenseId) => {
 export const create = async (expenseData) =>
   request.post(`${BASE_URL}/create`, expenseData);
 
+export const createItemPosition = async (expenseData) =>
+  request.post(`${BASE_URL}/create/line`, expenseData);
+
 export const update = async (expenseId, expenseData) =>
   request.put(`${BASE_URL}/${expenseId}`, expenseData);
 export const remove = async (expenseId) =>
@@ -48,6 +51,7 @@ const expenseAPI = {
   getAll,
   getById,
   create,
+  createItemPosition,
   update,
   remove,
   getLatest,

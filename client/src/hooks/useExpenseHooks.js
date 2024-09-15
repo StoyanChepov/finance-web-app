@@ -34,8 +34,6 @@ export function GetOneExpense(expenseId) {
     amount: 0,
     date: "",
     category: "",
-    quantity: 0,
-    price: 0,
   });
 
   useEffect(() => {

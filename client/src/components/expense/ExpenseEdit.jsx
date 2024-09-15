@@ -59,7 +59,7 @@ export default function ExpenseEdit() {
   return (
     <div className="expense-edit">
       <h2>Edit Expense</h2>
-      <form id="create" onSubmit={submitHandler}>
+      <form id="edit" onSubmit={submitHandler}>
         <label htmlFor="title">Title</label>
         <input
           type="text"

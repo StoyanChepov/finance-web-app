@@ -22,6 +22,7 @@ export default function ConfirmDelete({
       </p>
       <div className="modal-buttons">
         <button
+          type="button"
           onClick={onRequestClose}
           className="modal-button modal-button-cancel"
         >

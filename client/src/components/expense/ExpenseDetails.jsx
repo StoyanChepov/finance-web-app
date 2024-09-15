@@ -11,10 +11,13 @@ import {
   useGetAttachments,
   useCreateAttachment,
 } from "../../hooks/useAttachments";
+import LineItem from "./LineItem";
 
 export default function ExpenseDetails() {
   const { expenseId } = useParams();
   const [expense, setExpense] = GetOneExpense(expenseId);
+  console.log("The expense", expense);
+
   const [showModal, setShowModal] = useState(false);
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();
@@ -56,8 +59,23 @@ export default function ExpenseDetails() {
       <p>Amount: {expense.amount} $</p>
       <p>Date: {expense.date.split("T")[0]}</p>
       <p>Category: {expense.category.name}</p>
-      <p>Price: {expense.price} $</p>
-      <p>Quantity: {expense.quantity}</p>
+      {expense.itemPositions?.length > 0 && (
+        <table id="allExpenses">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {expense.itemPositions.map((itempos, index) => (
+              <LineItem key={index} {...itempos} />
+            ))}
+          </tbody>
+        </table>
+      )}
 
       {isOwner && (
         <div className="buttons">

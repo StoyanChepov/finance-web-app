@@ -14,6 +14,7 @@ const {
   getItems,
   getItemTypes,
   like,
+  createLine,
 } = require("../services/expense.service");
 const auth = require("../middlewares/auth");
 //TODO: Add home controller
@@ -157,6 +158,7 @@ expenseRouter.post(
 expenseRouter.post(
   "/expenses/create",
   auth,
+  body("id").trim(),
   body("title")
     .trim()
     .isLength({ min: 2 })
@@ -173,15 +175,6 @@ expenseRouter.post(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Category must be at least 1 character long!"),
-  body("quantity")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Quantity must be at least 1 character long!"),
-  body("price")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Price must be at least 1 character long!"),
-  body("item").trim(),
   async (req, res) => {
     try {
       const validation = validationResult(req);
@@ -196,6 +189,53 @@ expenseRouter.post(
       console.log("BODY", req.body);
 
       const result = await create(req.body, req.user._id);
+      console.log("Result", result);
+
+      res.send(result).status(200);
+    } catch (error) {
+      console.log("Error:", error);
+      res
+        .send({
+          errors: parseError(error).errors,
+          data: req.body,
+        })
+        .status(402);
+    }
+  }
+);
+
+expenseRouter.post(
+  "/expenses/create/line",
+  auth,
+  body("id").trim(),
+  body("amount")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Amount must be at least 1 character long!"),
+  body("quantity")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Quantity must be at least 1 character long!"),
+  body("itemId")
+    .trim(),
+  body("price")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Price must be at least 1 character long!"),
+  async (req, res) => {
+    try {
+      const validation = validationResult(req);
+      if (validation.errors.length) {
+        return res.status(402).send({ errors: validation.errors });
+      }
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
+      }
+      console.log("BODY", req.body);
+
+      const result = await createLine(req.body, req.user._id);
       console.log("Result", result);
 
       res.send(result).status(200);
@@ -230,14 +270,6 @@ expenseRouter.put(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Category must be at least 1 character long!"),
-  body("quantity")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Quantity must be at least 1 character long!"),
-  body("price")
-    .trim()
-    .isLength({ min: 1 })
-    .withMessage("Price must be at least 1 character long!"),
   async (req, res) => {
     const expenseId = req.params.id;
     const userId = req.user._id;

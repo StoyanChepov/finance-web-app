@@ -2,34 +2,29 @@ import { CreateOneExpense } from "../../hooks/useExpenseHooks";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetAllCategories, CreateOneCategory } from "../../hooks/useCategory";
-import { GetAllItems, CreateOneItem } from "../../hooks/useItem";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ConfirmCreate from "../modal/ConfirmCreate";
-import ConfirmItemCreate from "../modal/ConfirmItemCreate";
 import categoryAPI from "../../api/category-api";
-import itemAPI from "../../api/item-api";
 import { useAuthContext } from "../../contexts/AuthContext";
+import LineItem from "./LineItem";
+import expenseAPI from "../../api/expense-api";
+import ItemPositionCreate from "../modal/ItemPositionCreate";
 
 const initialValues = {
   title: "",
   date: "",
   category: "",
-  price: "",
-  quantity: "",
   amount: "",
-  item: "",
-  itemType: "",
 };
 
 export default function ExpenseCreate() {
   const navigate = useNavigate();
   const createExpense = CreateOneExpense();
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [showItemModal, setShowItemModal] = useState(false);
+  const [showItemPosModal, setShowItemPosModal] = useState(false);
   const { userId } = useAuthContext();
   const [categories, setCategories] = GetAllCategories(userId);
-  const [items, setItems] = GetAllItems(userId);
   const createHandler = async (values) => {
     values.category =
       categories.length > 0 && values.category == ""
@@ -37,9 +32,19 @@ export default function ExpenseCreate() {
         : values.category;
 
     try {
-      const { _id: expenseId } = await createExpense(values);
-      if (expenseId) {
-        navigate(`/expenses/${expenseId}/details`);
+      const { _id: positionId } = await createExpense(values);
+      if (positionId) {
+        if (itemPositions.length > 0) {
+          for (let item of itemPositions) {
+            const res = await expenseAPI.createItemPosition({
+              ...item,
+              positionId,
+            });
+            console.log("The response", res);
+          }
+        }
+        sessionStorage.removeItem("itemPositions");
+        navigate(`/expenses/${positionId}/details`);
       }
     } catch (error) {
       console.log(error);
@@ -51,13 +56,12 @@ export default function ExpenseCreate() {
     createHandler
   );
 
-  values.amount = values.price * values.quantity;
   const categoryCreateHandler = async () => {
     setShowCategoryModal(true);
   };
 
-  const itemCreateHandler = async () => {
-    setShowItemModal(true);
+  const itemPosCreateHandler = async () => {
+    setShowItemPosModal(true);
   };
 
   const handleConfirmCategoryCreate = async (name) => {
@@ -73,23 +77,56 @@ export default function ExpenseCreate() {
     }
   };
 
-  const handleConfirmItemCreate = async (name, type) => {
-    setShowItemModal(false);
+  const handleConfirmItemPosCreate = async (res) => {
+    setShowItemPosModal(false);
+    setItemPositions([...itemPositions, res]);
+    saveToCache([...itemPositions, res]);
+    /*    
     try {
-      const response = await itemAPI.create(name, type);
+      const response = await expenseAPI.createItemPosition(
+        item,
+        quantity,
+        price,
+        amount
+      );
       console.log("The response", response);
-      setItems((prev) => [response, ...prev]);
-      values.item = response._id;
+      setItemPositions((prev) => [response, ...prev]);
       return;
     } catch (error) {
       console.log(error);
     }
+    */
   };
 
   const handleCloseModal = () => {
-    setShowItemModal(false);
     setShowCategoryModal(false);
+    setShowItemPosModal(false);
   };
+
+  const [itemPositions, setItemPositions] = useState([]);
+
+  // Function to handle adding a new ListItem component to the list
+
+  // Save data to sessionStorage
+  const saveToCache = (value) => {
+    console.log("Saving to cache", value);
+
+    sessionStorage.setItem("itemPositions", JSON.stringify(value));
+    setItemPositions(value);
+  };
+
+  // Load data from sessionStorage on component mount
+  useEffect(() => {
+    const cachedData = sessionStorage.getItem("itemPositions");
+    if (cachedData) {
+      setItemPositions(JSON.parse(cachedData));
+    }
+  }, []); // Empty dependency array to run this effect once when the component mounts
+
+  values.amount = itemPositions.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
 
   return (
     <div className="expense-create">
@@ -160,71 +197,33 @@ export default function ExpenseCreate() {
             </div>
           </div>
         </div>
-        <div className="item-position">
-          <div className="form-group">
-            <label htmlFor="item">Item</label>
-            <div className="add-item">
-              <select
-                className="custom-select__control"
-                id="item"
-                name="item"
-                value={values.item}
-                onChange={changeHandler}
-                required
-              >
-                {items.length > 0 &&
-                  items.map((item) => (
-                    <option
-                      className="custom-select__option"
-                      key={item._id}
-                      value={item._id}
-                    >
-                      {item.name}
-                    </option>
-                  ))}{" "}
-                {items.length === 0 && (
-                  <option className="custom-select__option" value="">
-                    No items
-                  </option>
-                )}
-              </select>
-              <Link
-                onClick={itemCreateHandler}
-                className="button"
-                id="create-category-button"
-                title="Create Item"
-              >
-                +
-              </Link>
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="price">Price</label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              placeholder="Enter price"
-              value={values.price}
-              onChange={changeHandler}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="quantity">Quantity</label>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              placeholder="Enter quantity"
-              value={values.quantity}
-              onChange={changeHandler}
-              required
-            />
-          </div>
-        </div>
+        {itemPositions.length > 0 && (
+          <table id="allExpenses">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemPositions.map((itempos, index) => (
+                <LineItem key={index} {...itempos} />
+              ))}
+            </tbody>
+          </table>
+        )}
+        <Link
+          onClick={itemPosCreateHandler}
+          className="button"
+          id="create-category-button"
+          title="Add a line"
+        >
+          + Add a line
+        </Link>
         <div className="form-group">
-          <label htmlFor="amount">Amount</label>
+          <label htmlFor="amount">Total</label>
           <input
             type="number"
             id="amount"
@@ -241,17 +240,16 @@ export default function ExpenseCreate() {
           </button>
         </div>
       </form>
-      <ConfirmItemCreate
-        isOpen={showItemModal}
-        onRequestClose={handleCloseModal}
-        onConfirm={handleConfirmItemCreate}
-        object="Item"
-      />
       <ConfirmCreate
         isOpen={showCategoryModal}
         onRequestClose={handleCloseModal}
         onConfirm={handleConfirmCategoryCreate}
         object="Category"
+      />
+      <ItemPositionCreate
+        isOpen={showItemPosModal}
+        onRequestClose={handleCloseModal}
+        onConfirmItemPos={handleConfirmItemPosCreate}
       />
     </div>
   );
