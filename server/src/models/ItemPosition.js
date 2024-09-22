@@ -8,10 +8,10 @@ const itempositionSchema = new Schema({
   quantity: { type: Number, required: true },
   price: { type: Number, required: true },
   userId: { type: Types.ObjectId, ref: "User", required: true },
-  itemId: { type: Types.ObjectId, ref: "Item", required: false },
+  item: { type: Types.ObjectId, ref: "Item", required: false },
   positionId: { type: Types.ObjectId, ref: "Position", required: true },
   createdOn: { type: Date, required: true },
-  unitId: { type: Types.ObjectId, ref: "Unit", required: false },
+  unit: { type: Types.ObjectId, ref: "Unit", required: false },
 });
 
 const ItemPosition = model("ItemPosition", itempositionSchema);

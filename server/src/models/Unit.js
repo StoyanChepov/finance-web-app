@@ -6,7 +6,6 @@ const { Schema, Types, model } = require("mongoose");
 const unitSchema = new Schema({
   name: { type: String, required: true },
   createdOn: { type: Date, required: true },
-  userId: { type: Types.ObjectId, ref: "User" },
 });
 
 const Unit = model("Unit", unitSchema);

@@ -18,6 +18,7 @@ export function useForm(
   );
 
   const changeHandler = (e) => {
+    console.log(e.target.name, e.target.value);
     setValues((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
 

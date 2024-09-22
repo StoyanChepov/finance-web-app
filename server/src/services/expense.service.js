@@ -2,6 +2,7 @@ const { Position } = require("../models/Position");
 const { Attachment } = require("../models/Attachment");
 const { Category } = require("../models/Category");
 const { Item } = require("../models/Item");
+const { Unit } = require("../models/Unit");
 
 const mongoose = require("mongoose");
 const { ItemType } = require("../models/ItemType");
@@ -122,10 +123,15 @@ async function getById(id) {
         // Find all ItemPositions that reference this Position via positionId
         const itemPositions = await ItemPosition.find({
           positionId: position._id,
-        }).populate({
-          path: "itemId",
-          select: "name",
-        });
+        })
+          .populate({
+            path: "item",
+            select: "name",
+          })
+          .populate({
+            path: "unit",
+            select: "name",
+          });
         return { ...position, itemPositions };
       }
       return null; // Position not found
@@ -138,6 +144,10 @@ async function getAttachments(positionId) {
 
 async function getCategories(userId) {
   return await Category.find({ userId }).lean();
+}
+
+async function getUnits() {
+  return await Unit.find().lean();
 }
 
 async function addCategory(name, userId) {
@@ -207,10 +217,11 @@ async function createLine(data, authorId) {
     amount: data.amount,
     price: data.price,
     quantity: data.quantity,
-    itemId: data.item,
+    item: JSON.parse(data.item)._id,
     positionId: data.positionId,
     userId: authorId,
     createdOn: new Date().toISOString()?.split("T")[0],
+    unit: JSON.parse(data.unit)._id,
   });
   await newPosition.save();
 
@@ -279,6 +290,7 @@ module.exports = {
   getAllByCategory,
   getAllByDate,
   getItems,
+  getUnits,
   getItemTypes,
   addItem,
 };

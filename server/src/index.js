@@ -10,7 +10,6 @@ createDatabase();
 async function createDatabase() {
   const app = express();
   await configDatabase();
-  configHbs(app);
   configExpress(app);
   configRoutes(app);
 

@@ -1,5 +1,5 @@
 import { useAuthContext } from "../../contexts/AuthContext";
-import { GetAllItems } from "../../hooks/useItem";
+import { GetAllItems, GetAllUnits } from "../../hooks/useItem";
 import { useState } from "react";
 import ItemCreate from "./ItemCreate";
 import itemAPI from "../../api/item-api";
@@ -15,16 +15,17 @@ export default function ItemPositionCreate({
   onConfirmItemPos,
   id,
 }) {
-  console.log("The id", id);
   const initialValues = {
     itemId: "",
     price: "",
     quantity: "",
     amount: "",
     item: "",
+    unit: "",
   };
   const { userId } = useAuthContext();
   const [items, setItems] = GetAllItems(userId);
+  const [units, setUnits] = GetAllUnits(userId);
   const [showItemModal, setShowItemModal] = useState(false);
 
   const handleConfirmItemCreate = async (name, type) => {
@@ -51,7 +52,16 @@ export default function ItemPositionCreate({
     console.log("The values in item pos", values);
     if (values.itemId === "" && values.item !== "") {
       const item = items.find((item) => item._id === values.item);
-      values.itemId = item;
+      values.item = item;
+    } else if (values.itemId === "" && values.item === "") {
+      values.item = items[0];
+    }
+
+    const unit = units.find((unit) => unit._id === values.unit);
+    if (unit === undefined) {
+      values.unit = units[0];
+    } else {
+      values.unit = unit;
     }
     try {
       await onConfirmItemPos(values);
@@ -139,6 +149,35 @@ export default function ItemPositionCreate({
               onChange={changeHandler}
               required
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="unit">Unit</label>
+            <div className="add-item">
+              <select
+                className="custom-select__control"
+                id="unit"
+                name="unit"
+                value={values.unit}
+                onChange={changeHandler}
+                required
+              >
+                {units.length > 0 &&
+                  units.map((unit) => (
+                    <option
+                      className="custom-select__option"
+                      key={unit._id}
+                      value={unit._id}
+                    >
+                      {unit.name}
+                    </option>
+                  ))}{" "}
+                {units.length === 0 && (
+                  <option className="custom-select__option" value="">
+                    No units
+                  </option>
+                )}
+              </select>
+            </div>
           </div>
         </div>
 

@@ -23,6 +23,20 @@ export function GetAllItems(userId) {
   return [items, setItems];
 }
 
+export function GetAllUnits(userId) {
+  const [units, setUnits] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const items = await itemAPI.getAllUnits();
+      console.log("units to frontend", items);
+      setUnits(items);
+    })();
+  }, [userId]);
+
+  return [units, setUnits];
+}
+
 export function GetAllItemTypes(userId) {
     const [items, setItems] = useState([]);
   

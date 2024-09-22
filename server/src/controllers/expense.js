@@ -12,6 +12,7 @@ const {
   addItem,
   getCategories,
   getItems,
+  getUnits,
   getItemTypes,
   like,
   createLine,
@@ -76,6 +77,11 @@ expenseRouter.post(
 expenseRouter.get("/items", auth, async (req, res) => {
   const items = await getItems(req.user._id);
   res.send(items).status(200);
+});
+
+expenseRouter.get("/items/units", auth, async (req, res) => {
+  const units = await getUnits(req.user._id);
+  res.send(units).status(200);
 });
 
 expenseRouter.get("/items/types", auth, async (req, res) => {
@@ -216,12 +222,12 @@ expenseRouter.post(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Quantity must be at least 1 character long!"),
-  body("itemId")
-    .trim(),
+  body("item").trim(),
   body("price")
     .trim()
     .isLength({ min: 1 })
     .withMessage("Price must be at least 1 character long!"),
+  body("unit").trim().isLength({ min: 1 }),
   async (req, res) => {
     try {
       const validation = validationResult(req);

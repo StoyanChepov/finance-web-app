@@ -34,7 +34,7 @@ export default function ItemCreate({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="react-modal-content"
+      className="react-modal-content-item"
       overlayClassName="react-modal-overlay"
       contentLabel="Confirm Create"
     >

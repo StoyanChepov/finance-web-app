@@ -20,7 +20,7 @@ const initialValues = {
 
 export default function ExpenseCreate() {
   const navigate = useNavigate();
-  const createExpense = CreateOneExpense();
+  const createPosition = CreateOneExpense();
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showItemPosModal, setShowItemPosModal] = useState(false);
   const { userId } = useAuthContext();
@@ -32,15 +32,19 @@ export default function ExpenseCreate() {
         : values.category;
 
     try {
-      const { _id: positionId } = await createExpense(values);
+      const { _id: positionId } = await createPosition(values);
       if (positionId) {
         if (itemPositions.length > 0) {
           for (let item of itemPositions) {
-            const res = await expenseAPI.createItemPosition({
-              ...item,
+            await expenseAPI.createItemPosition({
+              itemId: item.itemId,
+              quantity: item.quantity,
+              price: item.price,
+              amount: item.amount,
+              unit: JSON.stringify(item.unit),
+              item: JSON.stringify(item.item),
               positionId,
             });
-            console.log("The response", res);
           }
         }
         sessionStorage.removeItem("itemPositions");
@@ -79,7 +83,6 @@ export default function ExpenseCreate() {
 
   const handleConfirmItemPosCreate = async (res) => {
     setShowItemPosModal(false);
-    setItemPositions([...itemPositions, res]);
     saveToCache([...itemPositions, res]);
     /*    
     try {
