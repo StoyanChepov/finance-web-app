@@ -21,7 +21,7 @@ export default function ChartList() {
           ],
         },
         options: {
-          responsive: true,
+          responsive: false,
           plugins: {
             legend: {
               position: "top",
@@ -46,7 +46,7 @@ export default function ChartList() {
           ],
         },
         options: {
-          responsive: true,
+          responsive: false,
           plugins: {
             legend: {
               position: "top",
