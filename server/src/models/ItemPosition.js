@@ -9,7 +9,7 @@ const itempositionSchema = new Schema({
   price: { type: Number, required: true },
   userId: { type: Types.ObjectId, ref: "User", required: true },
   item: { type: Types.ObjectId, ref: "Item", required: false },
-  positionId: { type: Types.ObjectId, ref: "Position", required: true },
+  position: { type: Types.ObjectId, ref: "Position", required: true },
   createdOn: { type: Date, required: true },
   unit: { type: Types.ObjectId, ref: "Unit", required: false },
 });

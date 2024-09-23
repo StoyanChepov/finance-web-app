@@ -8,7 +8,7 @@ const attachmentSchema = new Schema({
   url: { type: String, required: true },
   createdOn: { type: Date, required: true },
   userId: { type: Types.ObjectId, ref: "User" },
-  expenseId: { type: Types.ObjectId, ref: "Expense" },
+  position: { type: Types.ObjectId, ref: "Position" },
 });
 
 const Attachment = model("Attachment", attachmentSchema);

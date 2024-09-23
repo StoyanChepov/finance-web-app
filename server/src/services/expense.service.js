@@ -118,8 +118,6 @@ async function getById(id) {
     .exec()
     .then(async (position) => {
       if (position) {
-        console.log("Position", position);
-
         // Find all ItemPositions that reference this Position via positionId
         const itemPositions = await ItemPosition.find({
           positionId: position._id,
@@ -138,8 +136,8 @@ async function getById(id) {
     });
 }
 
-async function getAttachments(positionId) {
-  return await Attachment.find({ positionId }).lean();
+async function getAttachments(position) {
+  return await Attachment.find({ position }).lean();
 }
 
 async function getCategories(userId) {
@@ -189,10 +187,12 @@ async function addAttachment(positionId, url, name) {
     name,
     url,
     createdOn: new Date().toISOString()?.split("T")[0],
-    positionId,
+    position: positionId,
   });
 
   await attachment.save();
+  console.log("Attachment in db", attachment);
+
   return attachment;
 }
 
@@ -218,7 +218,7 @@ async function createLine(data, authorId) {
     price: data.price,
     quantity: data.quantity,
     item: JSON.parse(data.item)._id,
-    positionId: data.positionId,
+    position: data.positionId,
     userId: authorId,
     createdOn: new Date().toISOString()?.split("T")[0],
     unit: JSON.parse(data.unit)._id,

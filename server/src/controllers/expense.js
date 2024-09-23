@@ -23,7 +23,6 @@ const auth = require("../middlewares/auth");
 const expenseRouter = Router();
 
 expenseRouter.get("/attachments/:expenseId", auth, async (req, res) => {
-  console.log("Attachments", req.params.expenseId);
 
   const attachments = await getAttachments(req.params.expenseId);
 
