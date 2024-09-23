@@ -9,6 +9,7 @@ const {
   deleteById,
   getAttachments,
   addCategory,
+  addAttachment,
   addItem,
   getCategories,
   getItems,

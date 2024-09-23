@@ -33,8 +33,8 @@ export default function ItemPositionCreate({
     try {
       const response = await itemAPI.create(name, type);
       setItems((prev) => [response, ...prev]);
-      values.item = response._id;
-      values.itemId = response;
+      values.itemId = response._id;
+      values.item = response;
     } catch (error) {
       console.log(error);
     }
