@@ -17,13 +17,13 @@ const {
   getItemTypes,
   like,
   createLine,
+  updateLine
 } = require("../services/expense.service");
 const auth = require("../middlewares/auth");
 //TODO: Add home controller
 const expenseRouter = Router();
 
 expenseRouter.get("/attachments/:expenseId", auth, async (req, res) => {
-
   const attachments = await getAttachments(req.params.expenseId);
 
   if (!attachments) {
@@ -242,6 +242,54 @@ expenseRouter.post(
       console.log("BODY", req.body);
 
       const result = await createLine(req.body, req.user._id);
+      console.log("Result", result);
+
+      res.send(result).status(200);
+    } catch (error) {
+      console.log("Error:", error);
+      res
+        .send({
+          errors: parseError(error).errors,
+          data: req.body,
+        })
+        .status(402);
+    }
+  }
+);
+
+expenseRouter.put(
+  "/expenses/update/line/:id",
+  auth,
+  body("id").trim(),
+  body("amount")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Amount must be at least 1 character long!"),
+  body("quantity")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Quantity must be at least 1 character long!"),
+  body("item").trim(),
+  body("price")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Price must be at least 1 character long!"),
+  body("unit").trim().isLength({ min: 1 }),
+  async (req, res) => {
+    try {
+      const validation = validationResult(req);
+      if (validation.errors.length) {
+        return res.status(402).send({ errors: validation.errors });
+      }
+      const itemPositionId = req.params.id;
+      if (req.user === undefined && req.user._id === undefined) {
+        res
+          .status(401)
+          .send({ message: "You are not authorized to perform this action!" });
+      }
+      console.log("BODY", req.body);
+
+      const result = await updateLine(itemPositionId, req.body, req.user._id);
       console.log("Result", result);
 
       res.send(result).status(200);

@@ -16,6 +16,12 @@ const initialValues = {
   date: "",
   category: "",
   amount: "",
+  itemPositions: [],
+};
+
+// Save data to sessionStorage
+const saveToCache = (value) => {
+  sessionStorage.setItem("itemPositions", JSON.stringify(value));
 };
 
 export default function ExpenseCreate() {
@@ -34,8 +40,8 @@ export default function ExpenseCreate() {
     try {
       const { _id: positionId } = await createPosition(values);
       if (positionId) {
-        if (itemPositions.length > 0) {
-          for (let item of itemPositions) {
+        if (values.itemPositions.length > 0) {
+          for (let item of values.itemPositions) {
             await expenseAPI.createItemPosition({
               itemId: item.itemId,
               quantity: item.quantity,
@@ -83,22 +89,8 @@ export default function ExpenseCreate() {
 
   const handleConfirmItemPosCreate = async (res) => {
     setShowItemPosModal(false);
-    saveToCache([...itemPositions, res]);
-    /*    
-    try {
-      const response = await expenseAPI.createItemPosition(
-        item,
-        quantity,
-        price,
-        amount
-      );
-      console.log("The response", response);
-      setItemPositions((prev) => [response, ...prev]);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
-    */
+    values.itemPositions = [...values.itemPositions, res];
+    saveToCache([...values.itemPositions]);
   };
 
   const handleCloseModal = () => {
@@ -106,27 +98,15 @@ export default function ExpenseCreate() {
     setShowItemPosModal(false);
   };
 
-  const [itemPositions, setItemPositions] = useState([]);
-
-  // Function to handle adding a new ListItem component to the list
-
-  // Save data to sessionStorage
-  const saveToCache = (value) => {
-    console.log("Saving to cache", value);
-
-    sessionStorage.setItem("itemPositions", JSON.stringify(value));
-    setItemPositions(value);
-  };
-
   // Load data from sessionStorage on component mount
   useEffect(() => {
     const cachedData = sessionStorage.getItem("itemPositions");
     if (cachedData) {
-      setItemPositions(JSON.parse(cachedData));
+      values.itemPositions = JSON.parse(cachedData);
     }
   }, []); // Empty dependency array to run this effect once when the component mounts
 
-  values.amount = itemPositions.reduce(
+  values.amount = values.itemPositions.reduce(
     (acc, item) => acc + item.quantity * item.price,
     0
   );
@@ -200,7 +180,7 @@ export default function ExpenseCreate() {
             </div>
           </div>
         </div>
-        {itemPositions.length > 0 && (
+        {values.itemPositions.length > 0 && (
           <table id="allExpenses">
             <thead>
               <tr>
@@ -211,7 +191,7 @@ export default function ExpenseCreate() {
               </tr>
             </thead>
             <tbody>
-              {itemPositions.map((itempos, index) => (
+              {values.itemPositions.map((itempos, index) => (
                 <LineItem key={index} {...itempos} />
               ))}
             </tbody>

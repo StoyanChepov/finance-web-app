@@ -34,6 +34,7 @@ export function GetOneExpense(expenseId) {
     amount: 0,
     date: "",
     category: "",
+    itemPositions: [],
   });
 
   useEffect(() => {
@@ -44,6 +45,29 @@ export function GetOneExpense(expenseId) {
   }, [expenseId]);
 
   return [expense, setExpense];
+}
+
+export function GetOneItemPosition(itemPosId) {
+  const [itemPos, setItemPos] = useState({
+    itemId: "",
+    quantity: 0,
+    price: 0,
+    amount: 0,
+    unit: {},
+    item: {},
+    positionId: "",
+  });
+
+  useEffect(() => {
+    (async () => {
+      if (itemPosId !== null && itemPosId !== undefined) {
+        const itemPos = await expenseAPI.getItemPosById(itemPosId);
+        setItemPos(itemPos);
+      }
+    })();
+  }, [itemPosId]);
+
+  return [itemPos, setItemPos];
 }
 
 export function CreateOneExpense() {

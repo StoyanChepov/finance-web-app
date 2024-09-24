@@ -36,11 +36,20 @@ const getById = async (expenseId) => {
   return expense;
 };
 
+const getItemPosById = async (itemPosId) => {
+  console.log("itemPosId in getItemPosById: ", itemPosId);
+  const itemPos = await request.get(`${BASE_URL}/line/${itemPosId}`);
+  return itemPos;
+};
+
 export const create = async (expenseData) =>
   request.post(`${BASE_URL}/create`, expenseData);
 
 export const createItemPosition = async (expenseData) =>
   request.post(`${BASE_URL}/create/line`, expenseData);
+
+export const updateItemPosition = async (itemPositionId, data) =>
+  request.put(`${BASE_URL}/update/line/${itemPositionId}`, data);
 
 export const update = async (expenseId, expenseData) =>
   request.put(`${BASE_URL}/${expenseId}`, expenseData);
@@ -49,9 +58,11 @@ export const remove = async (expenseId) =>
 
 const expenseAPI = {
   getAll,
+  getItemPosById,
   getById,
   create,
   createItemPosition,
+  updateItemPosition,
   update,
   remove,
   getLatest,

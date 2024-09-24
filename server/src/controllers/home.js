@@ -3,6 +3,7 @@ const {
   getAll,
   getRecent,
   getById,
+  getItemPosById,
   searchExpense,
 } = require("../services/expense.service");
 
@@ -33,6 +34,19 @@ homeRouter.get("/expenses/:id", async (req, res) => {
   const recommendations = expense.recommendList.length;
   res.render("details", { expense, isOwner, hasLiked, recommendations });
   */
+});
+
+homeRouter.get("/expenses/line/:id", async (req, res) => {
+  //console.log(req.user);
+  console.log('req.params.id', req.params.id);
+
+  const itemPos = await getItemPosById(req.params.id);
+
+  if (!itemPos) {
+    res.status(404);
+    return;
+  }
+  res.send(itemPos).status(200);
 });
 
 homeRouter.get("/search", async (req, res) => {

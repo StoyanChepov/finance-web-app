@@ -120,7 +120,7 @@ async function getById(id) {
       if (position) {
         // Find all ItemPositions that reference this Position via positionId
         const itemPositions = await ItemPosition.find({
-          positionId: position._id,
+          position: position._id,
         })
           .populate({
             path: "item",
@@ -134,6 +134,22 @@ async function getById(id) {
       }
       return null; // Position not found
     });
+}
+
+async function getItemPosById(id) {
+  console.log("id in db", id);
+
+  return await ItemPosition.findById(id)
+    .populate({
+      path: "item",
+      select: "name",
+    })
+    .populate({
+      path: "unit",
+      select: "name",
+    })
+    .lean()
+    .exec();
 }
 
 async function getAttachments(position) {
@@ -228,6 +244,25 @@ async function createLine(data, authorId) {
   return newPosition;
 }
 
+async function updateLine(id, data, userId) {
+  const existing = await ItemPosition.findById(id);
+  if (!existing) {
+    throw new Error("Item Position not found");
+  }
+  if (existing.userId.toString() !== userId) {
+    throw new Error("User is not the author");
+  }
+  existing.price = data.price;
+  existing.quantity = data.quantity;
+  existing.amount = data.amount;
+  existing.unit = data.unit;
+  existing.item = data.item;
+
+  await existing.save();
+
+  return existing;
+}
+
 async function update(id, data, userId) {
   const existing = await Position.findById(id);
   if (!existing) {
@@ -293,4 +328,6 @@ module.exports = {
   getUnits,
   getItemTypes,
   addItem,
+  updateLine,
+  getItemPosById,
 };
