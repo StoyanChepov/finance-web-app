@@ -269,12 +269,12 @@ expenseRouter.put(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Quantity must be at least 1 character long!"),
-  body("item").trim(),
+  body("item"),
   body("price")
     .trim()
     .isLength({ min: 1 })
     .withMessage("Price must be at least 1 character long!"),
-  body("unit").trim().isLength({ min: 1 }),
+  body("unit"),
   async (req, res) => {
     try {
       const validation = validationResult(req);

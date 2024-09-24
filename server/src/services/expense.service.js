@@ -10,10 +10,12 @@ const { ItemPosition } = require("../models/ItemPosition");
 // TODO replace with your own data service
 
 async function getAll(userId) {
-  return await Position.find({ userId }).populate({
-    path: "category",
-    select: "name",
-  });
+  return await Position.find({ userId })
+    .populate({
+      path: "category",
+      select: "name",
+    })
+    .sort({ date: -1 });
 }
 
 async function getAllByCategory(userId) {
@@ -255,8 +257,8 @@ async function updateLine(id, data, userId) {
   existing.price = data.price;
   existing.quantity = data.quantity;
   existing.amount = data.amount;
-  existing.unit = data.unit;
-  existing.item = data.item;
+  existing.unit = JSON.parse(data.unit)._id;
+  existing.item = JSON.parse(data.item)._id;
 
   await existing.save();
 

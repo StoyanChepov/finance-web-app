@@ -17,10 +17,10 @@ export default function ItemPositionEdit({
   itemPosId,
 }) {
   const { userId } = useAuthContext();
+  const [showModal, setShowModal] = useState(false);
   const [items, setItems] = GetAllItems(userId);
   const [units, setUnits] = GetAllUnits(userId);
   const [showItemModal, setShowItemModal] = useState(false);
-
   let [itemPosition, setItemPosition] = GetOneItemPosition(itemPosId);
 
   const handleConfirmItemCreate = async (name, type) => {
@@ -28,7 +28,7 @@ export default function ItemPositionEdit({
     try {
       const response = await itemAPI.create(name, type);
       setItems((prev) => [response, ...prev]);
-      values.itemId = response._id;
+      values.itemId = response?._id;
       values.item = response;
     } catch (error) {
       console.log(error);
@@ -45,14 +45,14 @@ export default function ItemPositionEdit({
 
   const createHandler = async (values) => {
     console.log("The values in item pos", values);
-    if (values.itemId === "" && values.item !== "") {
-      const item = items.find((item) => item._id === values.item);
+    if (values.item !== "" && !values.item?._id) {
+      const item = items.find((item) => item?._id === values.item);
       values.item = item;
     } else if (values.itemId === "" && values.item === "") {
       values.item = items[0];
     }
 
-    const unit = units.find((unit) => unit._id === values.unit);
+    const unit = units.find((unit) => unit?._id === values.unit);
     if (unit === undefined) {
       values.unit = units[0];
     } else {
@@ -78,9 +78,9 @@ export default function ItemPositionEdit({
       onRequestClose={onRequestClose}
       className="react-modal-content"
       overlayClassName="react-modal-overlay"
-      contentLabel="Confirm Create"
+      contentLabel="Edit a line"
     >
-      <h2 className="modal-header">Add a line</h2>
+      <h2 className="modal-header">Edit a line</h2>
 
       <form id="create-item-pos" onSubmit={submitHandler}>
         <div className="item-position">
@@ -91,7 +91,7 @@ export default function ItemPositionEdit({
                 className="custom-select__control"
                 id="item"
                 name="item"
-                value={values.item}
+                value={values.item?._id}
                 onChange={changeHandler}
                 required
               >
@@ -99,8 +99,8 @@ export default function ItemPositionEdit({
                   items.map((item) => (
                     <option
                       className="custom-select__option"
-                      key={item._id}
-                      value={item._id}
+                      key={item?._id}
+                      value={item?._id}
                     >
                       {item.name}
                     </option>
@@ -160,8 +160,8 @@ export default function ItemPositionEdit({
                   units.map((unit) => (
                     <option
                       className="custom-select__option"
-                      key={unit._id}
-                      value={unit._id}
+                      key={unit?._id}
+                      value={unit?._id}
                     >
                       {unit.name}
                     </option>

@@ -16,8 +16,6 @@ import LineItem from "./LineItem";
 export default function ExpenseDetails() {
   const { expenseId } = useParams();
   const [expense, setExpense] = GetOneExpense(expenseId);
-  console.log("ExpenseDetails", expense);
-
   const [showModal, setShowModal] = useState(false);
   const { email, userId } = useAuthContext();
   const { isAuthenticated } = useAuthContext();

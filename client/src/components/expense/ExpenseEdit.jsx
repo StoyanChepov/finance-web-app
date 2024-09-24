@@ -131,6 +131,11 @@ export default function ExpenseEdit() {
     }
   }, []); // Empty dependency array to run this effect once when the component mounts
 
+  values.amount = values.itemPositions.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
+  );
+
   return (
     <div className="expense-edit">
       <h2>Edit Expense</h2>
@@ -169,7 +174,7 @@ export default function ExpenseEdit() {
                 className="custom-select__control"
                 id="category"
                 name="category"
-                value={values.category}
+                value={values.category._id}
                 onChange={changeHandler}
                 required
               >
