@@ -26,7 +26,12 @@ export default function ExpenseEdit() {
   const { userId } = useAuthContext();
   const [categories, setCategories] = GetAllCategories(userId);
   let [expense, setExpense] = GetOneExpense(expenseId);
-  if (sessionStorage.getItem("itemPositionsEdit")) {
+  console.log("ExpenseEdit", expense);
+
+  if (
+    sessionStorage.getItem("itemPositionsEdit") &&
+    sessionStorage.getItem("itemPositionsEdit").length > 0
+  ) {
     expense.itemPositions = JSON.parse(
       sessionStorage.getItem("itemPositionsEdit")
     );
@@ -43,9 +48,6 @@ export default function ExpenseEdit() {
             ? values.category._id
             : values.category,
       });
-      console.log("Updated Expense: ", updatedExpense);
-      console.log("Item Positions: ", values.itemPositions);
-
       if (values.itemPositions.length > 0) {
         for (let item of values.itemPositions) {
           if (item._id !== undefined) {
@@ -94,10 +96,13 @@ export default function ExpenseEdit() {
   };
 
   const handleConfirmItemPosEdit = async (res) => {
+    console.log("The res after ip edit", res);
+
     setShowItemPosModalEdit(false);
     values.itemPositions = values.itemPositions.map((item) =>
-      item.itemId === res.itemId ? res : item
+      item._id === res._id ? res : item
     );
+    setItemPosId(null);
     saveToCache([...values.itemPositions]);
   };
 

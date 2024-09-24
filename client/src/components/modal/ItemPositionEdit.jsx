@@ -70,7 +70,7 @@ export default function ItemPositionEdit({
     { reinititializeForm: true }
   );
 
-  //values.amount = values.price * values.quantity;
+  values.amount = values.price * values.quantity;
 
   return (
     <Modal
@@ -198,7 +198,7 @@ export default function ItemPositionEdit({
             Cancel
           </button>
           <button className="modal-button modal-button-confirm-create">
-            Create
+            Save changes
           </button>
         </div>
       </form>

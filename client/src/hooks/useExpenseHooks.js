@@ -61,7 +61,14 @@ export function GetOneItemPosition(itemPosId) {
   useEffect(() => {
     (async () => {
       if (itemPosId !== null && itemPosId !== undefined) {
-        const itemPos = await expenseAPI.getItemPosById(itemPosId);
+        let itemPos = JSON.parse(
+          sessionStorage.getItem("itemPositionsEdit")
+        )?.find((item) => item._id === itemPosId);
+        console.log("itemPos", itemPos);
+
+        if (!itemPos) {
+          itemPos = await expenseAPI.getItemPosById(itemPosId);
+        }
         setItemPos(itemPos);
       }
     })();

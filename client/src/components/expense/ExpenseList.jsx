@@ -4,6 +4,7 @@ import { GetAllExpenses } from "../../hooks/useExpenseHooks";
 
 export default function ExpenseList() {
   const [expenses] = GetAllExpenses();
+  sessionStorage.removeItem("itemPositionsEdit");
   return (
     <section id="expense-list">
       <div className="buttons">
