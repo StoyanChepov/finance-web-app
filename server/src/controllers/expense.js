@@ -17,7 +17,8 @@ const {
   getItemTypes,
   like,
   createLine,
-  updateLine
+  updateLine,
+  deleteLineById,
 } = require("../services/expense.service");
 const auth = require("../middlewares/auth");
 //TODO: Add home controller
@@ -354,6 +355,20 @@ expenseRouter.delete("/expenses/:id", auth, async (req, res) => {
   const userId = req.user._id;
   try {
     const result = await deleteById(expenseId, userId);
+    res.send(result).status(200);
+  } catch (error) {
+    console.log("Error:", error);
+    res.send({
+      errors: parseError(error).errors,
+    });
+  }
+});
+
+expenseRouter.delete("/expenses/delete/line/:id", auth, async (req, res) => {
+  const itemPosId = req.params.id;
+  const userId = req.user._id;
+  try {
+    const result = await deleteLineById(itemPosId, userId);
     res.send(result).status(200);
   } catch (error) {
     console.log("Error:", error);

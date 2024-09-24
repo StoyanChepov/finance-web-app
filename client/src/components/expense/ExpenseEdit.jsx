@@ -50,7 +50,7 @@ export default function ExpenseEdit() {
       });
       if (values.itemPositions.length > 0) {
         for (let item of values.itemPositions) {
-          if (item._id !== undefined) {
+          if (item._id !== undefined && item.status === "updated") {
             await expenseAPI.updateItemPosition(item._id, {
               itemId: item.itemId,
               quantity: item.quantity,
@@ -60,7 +60,7 @@ export default function ExpenseEdit() {
               item: JSON.stringify(item.item),
               positionId: expenseId,
             });
-          } else {
+          } else if (item._id !== undefined && item.status === "new") {
             await expenseAPI.createItemPosition({
               _id: item._id,
               itemId: item.itemId,
@@ -88,16 +88,25 @@ export default function ExpenseEdit() {
     setShowItemPosModal(false);
     setShowItemPosModalEdit(false);
   };
+  const handleDeleteItemPosModal = async (itemPosId) => {
+    setShowItemPosModalEdit(false);
+    values.itemPositions = values.itemPositions.filter(
+      (item) => item._id !== itemPosId
+    );
+    setItemPosId(null);
+    saveToCache([...values.itemPositions]);
+  };
 
   const handleConfirmItemPosCreate = async (res) => {
     setShowItemPosModal(false);
+    res.status = "new";
+    res._id = Math.random().toString(36);
     values.itemPositions = [...values.itemPositions, res];
     saveToCache([...values.itemPositions]);
   };
 
   const handleConfirmItemPosEdit = async (res) => {
-    console.log("The res after ip edit", res);
-
+    res.status = "updated";
     setShowItemPosModalEdit(false);
     values.itemPositions = values.itemPositions.map((item) =>
       item._id === res._id ? res : item
@@ -267,6 +276,7 @@ export default function ExpenseEdit() {
       <ItemPositionEdit
         isOpen={showItemPosModalEdit}
         onRequestClose={handleCloseModal}
+        onDeleteItemPos={handleDeleteItemPosModal}
         onConfirmItemPos={handleConfirmItemPosEdit}
         itemPosId={itemPosId}
       />

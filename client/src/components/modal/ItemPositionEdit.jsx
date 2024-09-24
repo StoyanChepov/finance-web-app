@@ -7,12 +7,15 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import Modal from "react-modal";
 import { GetOneItemPosition } from "../../hooks/useExpenseHooks";
+import ConfirmDelete from "./ConfirmDelete";
+import expenseAPI from "../../api/expense-api";
 
 Modal.setAppElement("#root");
 
 export default function ItemPositionEdit({
   isOpen,
   onRequestClose,
+  onDeleteItemPos,
   onConfirmItemPos,
   itemPosId,
 }) {
@@ -39,12 +42,15 @@ export default function ItemPositionEdit({
     setShowItemModal(true);
   };
 
+  const itemPosDeleteHandler = async () => {
+    setShowModal(true);
+  };
+
   const handleCloseModal = () => {
     setShowItemModal(false);
   };
 
   const createHandler = async (values) => {
-    console.log("The values in item pos", values);
     if (values.item !== "" && !values.item?._id) {
       const item = items.find((item) => item?._id === values.item);
       values.item = item;
@@ -69,6 +75,18 @@ export default function ItemPositionEdit({
     createHandler,
     { reinititializeForm: true }
   );
+
+  const handleConfirmDelete = async () => {
+    if (itemPosition.status !== "new") {
+      try {
+        await expenseAPI.removeItemPos(itemPosId);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setShowModal(false);
+    onDeleteItemPos(itemPosId);
+  };
 
   values.amount = values.price * values.quantity;
 
@@ -197,6 +215,13 @@ export default function ItemPositionEdit({
           >
             Cancel
           </button>
+          <Link
+            onClick={itemPosDeleteHandler}
+            className="button"
+            id="delete-button"
+          >
+            Delete
+          </Link>
           <button className="modal-button modal-button-confirm-create">
             Save changes
           </button>
@@ -207,6 +232,11 @@ export default function ItemPositionEdit({
         onRequestClose={handleCloseModal}
         onConfirm={handleConfirmItemCreate}
         object="Item"
+      />
+      <ConfirmDelete
+        isOpen={showModal}
+        onRequestClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
       />
     </Modal>
   );

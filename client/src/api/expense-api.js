@@ -56,6 +56,9 @@ export const update = async (expenseId, expenseData) =>
 export const remove = async (expenseId) =>
   request.del(`${BASE_URL}/${expenseId}`);
 
+export const removeItemPos = async (itemPosId) =>
+  request.del(`${BASE_URL}/delete/line/${itemPosId}`); 
+
 const expenseAPI = {
   getAll,
   getItemPosById,
@@ -66,6 +69,7 @@ const expenseAPI = {
   update,
   remove,
   getLatest,
+  removeItemPos
 };
 
 export default expenseAPI;

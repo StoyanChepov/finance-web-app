@@ -301,6 +301,18 @@ async function deleteById(id, userId) {
   return result;
 }
 
+async function deleteLineById(id, userId) {
+  const existing = await ItemPosition.findById(id);
+  if (!existing) {
+    throw new Error("Item Position not found" + id);
+  }
+  if (existing.userId.toString() !== userId) {
+    throw new Error("User is not the author");
+  }
+  const result = await ItemPosition.findByIdAndDelete(id);
+  return result;
+}
+
 async function searchPosition(title) {
   const query = {};
 
@@ -331,5 +343,6 @@ module.exports = {
   getItemTypes,
   addItem,
   updateLine,
+  deleteLineById,
   getItemPosById,
 };
