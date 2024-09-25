@@ -19,7 +19,7 @@ export default function Home() {
             Add Expense
           </Link>
 
-          <Link to={`/income/create?type=income`} className="button" id="edit-button">
+          <Link to={`/expenses/create?type=income`} className="button" id="edit-button">
             Add Income
           </Link>
         </div>
