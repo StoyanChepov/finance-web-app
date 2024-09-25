@@ -15,11 +15,11 @@ export default function Home() {
     <section id="home">
       {latestExpenses.length === 0 && (
         <div className="buttons">
-          <Link to={`/expenses/create`} className="button" id="edit-button">
+          <Link to={`/expenses/create?type=expense`} className="button" id="edit-button">
             Add Expense
           </Link>
 
-          <Link to={`/income/create`} className="button" id="edit-button">
+          <Link to={`/income/create?type=income`} className="button" id="edit-button">
             Add Income
           </Link>
         </div>
