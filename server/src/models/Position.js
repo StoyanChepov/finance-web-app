@@ -9,6 +9,7 @@ const positionSchema = new Schema({
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
   category: { type: Types.ObjectId, ref: "Category", required: true },
+  type: { type: String, required: true },
   userId: { type: Types.ObjectId, ref: "User", required: false },
 });
 

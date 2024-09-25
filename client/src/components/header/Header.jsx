@@ -14,7 +14,8 @@ export default function Header() {
         {/* If user is authenticated, show user links, else show guest links */}
         {isAuthenticated ? (
           <div id="user">
-            <Link to="/expenses">Expenses</Link>
+            <Link to="/positions?type=income">Profits</Link>
+            <Link to="/positions?type=expense">Expenses</Link>
             <Link to="/monitor">Data Analysis</Link>
             <Link to="/logout">Logout</Link>
           </div>

@@ -222,6 +222,7 @@ async function create(data, authorId) {
     amount: data.amount,
     date: data.date.split("T")[0],
     category: data.category,
+    type: data.type,
     userId: authorId,
   });
   await newPosition.save();

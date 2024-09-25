@@ -182,6 +182,10 @@ expenseRouter.post(
     .trim()
     .isLength({ min: 1 })
     .withMessage("Category must be at least 1 character long!"),
+  body("type")
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("Type must be at least 1 character long!"),
   async (req, res) => {
     try {
       const validation = validationResult(req);

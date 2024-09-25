@@ -28,7 +28,7 @@ function App() {
               />
               <Route path="expenses/create" element={<ExpenseCreate />} />
               <Route path="/logout" element={<Logout />} />
-              <Route path="/expenses" element={<ExpenseList />} />
+              <Route path="/positions" element={<ExpenseList />} />
               <Route path="/monitor" element={<ChartList />} />
               <Route
                 path="/expenses/:expenseId/details"

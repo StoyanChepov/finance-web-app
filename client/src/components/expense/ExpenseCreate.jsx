@@ -1,6 +1,6 @@
 import { CreateOneExpense } from "../../hooks/useExpenseHooks";
 import { useForm } from "../../hooks/useForm";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { GetAllCategories, CreateOneCategory } from "../../hooks/useCategory";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -10,14 +10,6 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import LineItem from "./LineItem";
 import expenseAPI from "../../api/expense-api";
 import ItemPositionCreate from "../modal/ItemPositionCreate";
-
-const initialValues = {
-  title: "",
-  date: "",
-  category: "",
-  amount: "",
-  itemPositions: [],
-};
 
 // Save data to sessionStorage
 const saveToCache = (value) => {
@@ -31,6 +23,8 @@ export default function ExpenseCreate() {
   const [showItemPosModal, setShowItemPosModal] = useState(false);
   const { userId } = useAuthContext();
   const [categories, setCategories] = GetAllCategories(userId);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const type = searchParams.get("type");
   const createHandler = async (values) => {
     values.category =
       categories.length > 0 && values.category == ""
@@ -60,7 +54,14 @@ export default function ExpenseCreate() {
       console.log(error);
     }
   };
-
+  const initialValues = {
+    title: "",
+    date: "",
+    category: "",
+    amount: "",
+    itemPositions: [],
+    type: type,
+  };
   const { values, changeHandler, submitHandler } = useForm(
     initialValues,
     createHandler
@@ -113,7 +114,7 @@ export default function ExpenseCreate() {
 
   return (
     <div className="expense-create">
-      <h2>Create Expense</h2>
+      <h2>Create {type}</h2>
       <form id="create" onSubmit={submitHandler}>
         <label htmlFor="title">Title</label>
         <input

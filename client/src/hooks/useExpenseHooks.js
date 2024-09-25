@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import expenseAPI from "../api/expense-api";
 import aggregationAPI from "../api/aggregation-api";
 
-export function GetAllExpenses() {
+export function GetAllExpenses(type) {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const expenses = await expenseAPI.getAll();
+      let expenses = await expenseAPI.getAll();
+      if (expenses.length > 0) {
+        expenses = expenses.filter((expense) => expense.type === type);
+      }
       setExpenses(expenses);
     })();
-  }, []);
+  }, [type]);
 
   return [expenses, setExpenses];
 }
