@@ -41,7 +41,7 @@ export default function ExpenseDetails() {
     try {
       const response = await expenseAPI.remove(expenseId);
       console.log(response);
-      navigate("/expenses");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
