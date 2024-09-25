@@ -2,9 +2,10 @@ import * as request from "./requester";
 
 const BASE_URL = "http://localhost:3000/aggregation";
 
-export const getChartData = async (number) => {
+export const getChartData = async (type, number) => {
   const urlSearchParams = new URLSearchParams({
     //sortBy: '_createdOn desc',
+    type,
     chartId: number,
   });
   const aggregations = await request.get(

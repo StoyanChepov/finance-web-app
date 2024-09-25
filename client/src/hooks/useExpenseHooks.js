@@ -18,12 +18,12 @@ export function GetAllExpenses(type) {
   return [expenses, setExpenses];
 }
 
-export function GetAggregatedExpenses(number) {
+export function GetAggregatedExpenses(type, number) {
   const [aggregatedExpenses, setAggregatedExpenses] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const expenses = await aggregationAPI.getChartData(number);
+      const expenses = await aggregationAPI.getChartData(type, number);
       setAggregatedExpenses(expenses);
     })();
   }, []);

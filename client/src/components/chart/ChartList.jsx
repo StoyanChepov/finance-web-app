@@ -2,8 +2,10 @@ import Chart from "./Chart";
 import { GetAggregatedExpenses } from "../../hooks/useExpenseHooks";
 
 export default function ChartList() {
-  const [chartDataGroupedByCategory] = GetAggregatedExpenses(1);
-  const [chartDataGroupedByMonth] = GetAggregatedExpenses(2);
+  const [chartDataExpensesGroupedByCategory] = GetAggregatedExpenses('expense', 1);
+  const [chartDataExpensesGroupedByMonth] = GetAggregatedExpenses('expense', 2);
+  const [chartDataIncomeGroupedByCategory] = GetAggregatedExpenses('income', 1);
+  const [chartDataIncomeGroupedByMonth] = GetAggregatedExpenses('income', 2);
 
   const [charts] = [
     [
@@ -11,11 +13,15 @@ export default function ChartList() {
         _id: 1,
         type: "bar",
         data: {
-          labels: chartDataGroupedByCategory.map((data) => data.category),
+          labels: chartDataExpensesGroupedByCategory.map(
+            (data) => data.category
+          ),
           datasets: [
             {
               label: "Expense By Category",
-              data: chartDataGroupedByCategory.map((data) => data.total),
+              data: chartDataExpensesGroupedByCategory.map(
+                (data) => data.total
+              ),
               borderColor: "rgb(75, 192, 192)",
             },
           ],
@@ -36,11 +42,62 @@ export default function ChartList() {
       {
         _id: 2,
         data: {
-          labels: chartDataGroupedByMonth.map((data) => data.date),
+          labels: chartDataExpensesGroupedByMonth.map((data) => data.date),
           datasets: [
             {
               label: "Expense By Month",
-              data: chartDataGroupedByMonth.map((data) => data.total),
+              data: chartDataExpensesGroupedByMonth.map((data) => data.total),
+              borderColor: "rgb(75, 192, 192)",
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Chart.js Line Chart",
+            },
+          },
+        },
+      },
+      {
+        _id: 3,
+        type: "bar",
+        data: {
+          labels: chartDataIncomeGroupedByCategory.map((data) => data.category),
+          datasets: [
+            {
+              label: "Income By Category",
+              data: chartDataIncomeGroupedByCategory.map((data) => data.total),
+              borderColor: "rgb(75, 192, 192)",
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Chart.js Line Chart By Category",
+            },
+          },
+        },
+      },
+      {
+        _id: 4,
+        data: {
+          labels: chartDataIncomeGroupedByMonth.map((data) => data.date),
+          datasets: [
+            {
+              label: "Income By Month",
+              data: chartDataIncomeGroupedByMonth.map((data) => data.total),
               borderColor: "rgb(75, 192, 192)",
             },
           ],

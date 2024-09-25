@@ -18,7 +18,7 @@ async function getAll(userId) {
     .sort({ date: -1 });
 }
 
-async function getAllByCategory(userId) {
+async function getAllByCategory(type, userId) {
   console.log("userId in agg", userId);
   return await Position.aggregate([
     { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by userId
@@ -31,6 +31,7 @@ async function getAllByCategory(userId) {
       },
     },
     { $unwind: "$categoryInfo" }, // Unwind the array returned by $lookup
+    { $match: { type: type } }, // Add a filter for type (replace with your variable)
     { $group: { _id: "$categoryInfo.name", total: { $sum: "$amount" } } }, // Group by category name and sum the amounts
     { $project: { _id: 0, category: "$_id", total: 1 } }, // Format the result
     { $sort: { total: -1 } }, // Optionally sort by total in descending order
@@ -72,7 +73,7 @@ async function getAllByCategory(userId) {
   */
 }
 
-async function getAllByDate(userId) {
+async function getAllByDate(type, userId) {
   console.log("userId in agg", userId);
   return await Position.aggregate([
     { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by userId
@@ -85,6 +86,7 @@ async function getAllByDate(userId) {
       },
     },
     { $unwind: "$categoryInfo" }, // Unwind the categoryInfo array
+    { $match: { type: type } }, // Add a filter for type (replace with your variable)
     {
       $group: {
         _id: {

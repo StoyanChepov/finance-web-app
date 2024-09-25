@@ -14,13 +14,14 @@ const aggregationRouter = Router();
 aggregationRouter.get("/aggregation", auth, async (req, res) => {
   const chartId = req.query.chartId;
   console.log("ChartId: ", chartId);
+  const type = req.query.type;
 
   //console.log(req.user);
   let aggregation = null;
   if (chartId == 1) {
-    aggregation = await getAllByCategory(req.user._id);
+    aggregation = await getAllByCategory(type, req.user._id);
   } else if (chartId == 2) {
-    aggregation = await getAllByDate(req.user._id);
+    aggregation = await getAllByDate(type, req.user._id);
   }
   if (!aggregation) {
     res.status(404);
