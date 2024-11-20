@@ -1,6 +1,6 @@
 import * as request from "./requester";
 
-const BASE_URL = "http://localhost:3000/expenses";
+const BASE_URL = `${import.meta.env.VITE_HEROKU_APP_URL}/expenses`;
 
 const getAll = async () => {
   const expenses = await request.get(BASE_URL);
@@ -57,7 +57,7 @@ export const remove = async (expenseId) =>
   request.del(`${BASE_URL}/${expenseId}`);
 
 export const removeItemPos = async (itemPosId) =>
-  request.del(`${BASE_URL}/delete/line/${itemPosId}`); 
+  request.del(`${BASE_URL}/delete/line/${itemPosId}`);
 
 const expenseAPI = {
   getAll,
@@ -69,7 +69,7 @@ const expenseAPI = {
   update,
   remove,
   getLatest,
-  removeItemPos
+  removeItemPos,
 };
 
 export default expenseAPI;

@@ -1,6 +1,6 @@
 import * as request from "./requester";
 
-const BASE_URL = "http://localhost:3000/aggregation";
+const BASE_URL = `${import.meta.env.VITE_HEROKU_APP_URL}/aggregation`;
 
 export const getChartData = async (type, number) => {
   const urlSearchParams = new URLSearchParams({

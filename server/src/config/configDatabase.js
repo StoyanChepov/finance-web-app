@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 async function configDatabase() {
   //Set database connection
-  await mongoose.connect("mongodb://localhost:27017/PersonalFinanceDB");
+  await mongoose.connect(process.env.MONGODB_URI);
 
   console.log("Database connected!");
 }

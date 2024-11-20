@@ -1,6 +1,6 @@
 import * as request from "./requester";
 
-const BASE_URL = "http://localhost:3000/attachments";
+const BASE_URL = `${import.meta.env.VITE_HEROKU_APP_URL}/attachments`;
 
 const create = async (expenseId, url, name) =>
   request.post(`${BASE_URL}/create`, { expenseId, url, name });

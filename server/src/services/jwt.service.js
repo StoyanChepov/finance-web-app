@@ -7,7 +7,9 @@ function createToken(userData) {
     email: userData.email,
     _id: userData._id,
   };
-  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
   return token;
 }
 
